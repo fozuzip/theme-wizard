@@ -1,5 +1,7 @@
 import useCssVariable from "./useCssVariable";
 
+export type CssColor = ReturnType<typeof useCssColor>;
+
 const useCssColor = (variableName: string) => {
   const variable = useCssVariable(variableName);
 
