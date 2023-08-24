@@ -7,6 +7,28 @@ import useTheme from "@/hooks/useTheme";
 import { ColorSelect } from "@/components/color-select";
 import { Button } from "@/components/ui/button";
 
+// TODO: Randomize
+// TODO: Select prefered scheme
+// TODO: Lock colors
+// TODO: Delete colors
+// TODO: Undo/Redo
+
+// TODO: Contrast checker
+
+// TODO: Contrast toggle
+
+// TODO: Light/Dark mode
+
+// TODO: Select fonts
+// TODO: Select font sizes
+// TODO: Select line heights
+
+// TODO: Export to CSS
+
+// TODO: Theme Presets
+
+// TODO: Make toolbar's theme independent
+
 export const Toolbar = () => {
   const { theme, setName, setColor, addColor } = useTheme();
 
