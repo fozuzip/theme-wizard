@@ -5,10 +5,36 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const debounce = (fn: Function, ms = 300) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
-  };
-};
+export function cssVarStringToHsl(value: string, percentage = false) {
+  let hue = 0;
+  let saturation = 0;
+  let lightness = 0;
+
+  // Regular expression to match numbers
+  const numberPattern = /(\d+(\.\d+)?)/g;
+
+  // Extract the numbers from the HSLA string
+  const extractedNumbers = value.match(numberPattern);
+
+  if (extractedNumbers && extractedNumbers.length >= 3) {
+    hue = parseFloat(extractedNumbers[0]);
+    saturation = parseFloat(extractedNumbers[1]);
+    if (percentage) saturation = saturation / 100;
+    lightness = parseFloat(extractedNumbers[2]);
+    if (percentage) lightness = lightness / 100;
+  }
+
+  return { h: hue, s: saturation, l: lightness };
+}
+
+export function hslToCssString({
+  h,
+  s,
+  l,
+}: {
+  h: number;
+  s: number;
+  l: number;
+}) {
+  return `${h} ${s * 100}% ${l * 100}%`;
+}

@@ -1,31 +1,20 @@
-"use client";
-
-import { useMemo } from "react";
 import { HslColorPicker } from "react-colorful";
 
-import { CssColor } from "@/hooks/useCssColor";
+import { cssVarStringToHsl } from "@/lib/utils";
 
 interface ColorPickerProps {
-  color: CssColor;
+  value: string;
+  onChange: (value: string) => void;
 }
 
-const ColorPicker = ({ color }: ColorPickerProps) => {
-  const colorPickerValue = useMemo(
-    () => ({
-      h: color.hue || 0,
-      s: color.saturation || 0,
-      l: color.lightness || 0,
-    }),
-    [color.hue, color.saturation, color.lightness]
-  );
+export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
+  const colorPickerValue = cssVarStringToHsl(value);
 
   const onColorPickerChange = (value: { h: number; s: number; l: number }) => {
-    color.set(`${value.h}, ${value.s}%, ${value.l}%`);
+    onChange(`${value.h}, ${value.s}%, ${value.l}%`);
   };
 
   return (
     <HslColorPicker color={colorPickerValue} onChange={onColorPickerChange} />
   );
 };
-
-export default ColorPicker;
