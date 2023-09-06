@@ -43,13 +43,13 @@ export const Toolbar = () => {
           onNameChange={setName(index)}
         />
       ))}
-      <Button
+      {/* <Button
         variant="ghost"
         className="bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 hover:scale-105 transition"
         onClick={addColor}
       >
         <Plus className="w-5 h-5" />
-      </Button>
+      </Button> */}
     </div>
   );
 };
