@@ -37,25 +37,14 @@ export const ColorSelect = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div
-          className={cn(
-            "h-20 flex items-center justify-center rounded-md cursor-pointer hover:scale-105 transition",
-            contrast >= 4.5 ? "text-[#F8FAFC]" : "text-[#0F172A]"
-          )}
-          style={{ backgroundColor: hex }}
-        >
-          <div className="flex flex-col items-center space-y-1">
-            <h3 className="text-md font-bold">{hex}</h3>
-            <p className="text-xs font-semibold">{name}</p>
-          </div>
+        <div className="flex items-center cursor-pointer">
+          <div
+            className="flex h-6 w-6 items-center justify-center rounded-full ring-2 ring-offset-2 ring-offset-background"
+            style={{ backgroundColor: hex }}
+          />
         </div>
       </PopoverTrigger>
-      <PopoverContent
-        align="start"
-        side="right"
-        sideOffset={14}
-        className="w-59 p-3"
-      >
+      <PopoverContent sideOffset={14} className="w-59 p-3">
         <div className="flex flex-col items-center justify-center space-y-2">
           <ColorPicker value={value} onChange={onChange} />
           <Input
