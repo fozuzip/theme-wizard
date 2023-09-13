@@ -1,5 +1,5 @@
 import chroma from "chroma-js";
-import { cn, cssVarStringToHsl } from "@/lib/utils";
+import { cssVarStringToHsl } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,

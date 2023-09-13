@@ -10,6 +10,7 @@ import { ColorSelect } from "@/components/color-select";
 
 export const Navbar = () => {
   const { theme, setName, setColor, addColor } = useTheme();
+  console.log(theme);
 
   return (
     <header className="relative z-50 w-full flex-none text-sm font-semibold leading-6 ">
@@ -48,8 +49,8 @@ export const Navbar = () => {
               </Button>
             </div>
             <Button className="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 -my-2.5">
-              <div className="flex gap-2 items-center font-semibold text-black">
-                Extract Code
+              <div className="flex gap-2 items-center font-semibold ">
+                Export theme
                 <ArrowRight size={16} />
               </div>
             </Button>
