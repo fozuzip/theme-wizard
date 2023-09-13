@@ -1,11 +1,11 @@
-import { ClickableComponent } from "@/components/ClickableComponent";
-import { Graphic } from "@/components/Graphic";
+import { ClickableComponent } from "@/components/clickable-component";
+import { Graphic } from "@/components/graphic";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export const HeroSection = () => {
   return (
-    <div className="flex h-[400px]">
+    <section className="flex h-[400px]">
       <div>
         <div
           className="h-7 text-base font-semibold leading-7 text-primary"
@@ -24,7 +24,7 @@ export const HeroSection = () => {
           </ClickableComponent>
         </h1>
 
-        <p className="col-start-1 row-start-3 mt-4 max-w-lg text-lg text-foreground/80">
+        <p className="col-start-1 row-start-3 mt-4 max-w-lg text-lg text-foreground/60">
           Choose the colour pallete for your next app, website, blog. Optimized
           to work with tailwind css and shadcn-ui.
         </p>
@@ -46,6 +46,6 @@ export const HeroSection = () => {
       <div className="flex-1">
         <Graphic />
       </div>
-    </div>
+    </section>
   );
 };

@@ -10,7 +10,6 @@ import { ColorSelect } from "@/components/color-select";
 
 export const Navbar = () => {
   const { theme, setName, setColor, addColor } = useTheme();
-  console.log(theme);
 
   return (
     <header className="relative z-50 w-full flex-none text-sm font-semibold leading-6 ">

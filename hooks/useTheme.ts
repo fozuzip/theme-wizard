@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 
+// What to do about border and muted ? Also muted text
+
 const initialTheme = [
   {
     id: 1,
     name: "Background",
     color: "200 100% 3%",
-    cssVariables: ["--background", "--primary-foreground"],
+    cssVariables: [
+      "--background",
+      "--primary-foreground",
+      "--card",
+      "--popover",
+    ],
   },
   {
     id: 2,
@@ -19,20 +26,24 @@ const initialTheme = [
       "--accent-foreground",
       "--destructive-foreground",
       "--muted-foreground",
-      "--border",
+      // "--border",
     ],
   },
   {
     id: 3,
     name: "Primary",
     color: "201 63% 54%",
-    cssVariables: ["--primary", "--muted", "--ring"],
+    cssVariables: [
+      "--primary",
+      // "--muted",
+      "--ring",
+    ],
   },
   {
     id: 4,
     name: "Secondary",
     color: "201 25% 13%",
-    cssVariables: ["--secondary", "--popover", "--card", "--input", "--accent"],
+    cssVariables: ["--secondary", "--input", "--accent"],
   },
   {
     id: 5,
