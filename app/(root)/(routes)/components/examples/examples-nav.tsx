@@ -10,6 +10,7 @@ import { useState } from "react";
 
 import { Cards } from "./cards";
 import { Tasks } from "./tasks";
+import { Playground } from "./playground";
 
 const examples = [
   {
@@ -68,6 +69,7 @@ export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
       <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
         {selected === "cards" && <Cards />}
         {selected === "tasks" && <Tasks />}
+        {selected === "playground" && <Playground />}
       </div>
     </div>
   );
