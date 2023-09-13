@@ -1,12 +1,12 @@
-import { DemoCookieSettings } from "./cookie-settings";
-import { DemoCreateAccount } from "./create-account";
-import { DemoDatePicker } from "./date-picker";
-import { DemoGithub } from "./github-card";
-import { DemoNotifications } from "./notifications";
-import { DemoPaymentMethod } from "./payment-method";
-import { DemoReportAnIssue } from "./report-an-issue";
-import { DemoShareDocument } from "./share-documents";
-import { DemoTeamMembers } from "./team-members";
+import { DemoCookieSettings } from "./cards/cookie-settings";
+import { DemoCreateAccount } from "./cards/create-account";
+import { DemoDatePicker } from "./cards/date-picker";
+import { DemoGithub } from "./cards/github-card";
+import { DemoNotifications } from "./cards/notifications";
+import { DemoPaymentMethod } from "./cards/payment-method";
+import { DemoReportAnIssue } from "./cards/report-an-issue";
+import { DemoShareDocument } from "./cards/share-documents";
+import { DemoTeamMembers } from "./cards/team-members";
 
 export const Cards = () => {
   return (

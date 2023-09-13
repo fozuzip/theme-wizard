@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 import { Cards } from "./cards";
+import { Tasks } from "./tasks";
 
 const examples = [
   {
@@ -32,7 +33,7 @@ const examples = [
 interface ExamplesNavProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
-  const [selected, setSelected] = useState("cards");
+  const [selected, setSelected] = useState("tasks");
 
   return (
     <div className="relative">
@@ -65,7 +66,8 @@ export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
         <ArrowRight className="ml-1 h-4 w-4" />
       </Link>
       <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
-        <Cards />
+        {selected === "cards" && <Cards />}
+        {selected === "tasks" && <Tasks />}
       </div>
     </div>
   );
