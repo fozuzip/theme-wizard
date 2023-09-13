@@ -7,14 +7,27 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ColorSelect } from "@/components/color-select";
+import useIsScrolled from "@/hooks/useIsScrolled";
+import { cn } from "@/lib/utils";
 
 export const Navbar = () => {
   const { theme, setName, setColor, addColor } = useTheme();
+  const isScrolled = useIsScrolled();
 
   return (
-    <header className="relative z-50 w-full flex-none text-sm font-semibold leading-6 ">
+    <header
+      className={cn(
+        "sticky top-0  z-50 w-full flex-none text-sm font-semibold leading-6 bg-background",
+        isScrolled && "border-b"
+      )}
+    >
       <nav className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-        <div className="relative flex items-center py-[2.125rem]">
+        <div
+          className={cn(
+            "relative flex items-center py-[2.125rem] transition-all",
+            isScrolled && "py-[1rem]"
+          )}
+        >
           <a className="flex gap-3 items-center cursor-pointer">
             <Logo />
             <h1 className="font-bold text-2xl">theme wizard</h1>
