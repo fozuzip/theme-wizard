@@ -17,22 +17,26 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { ColorPicker } from "./color-picker";
+import useTheme from "@/hooks/useTheme";
+import { cssVarToHex } from "@/lib/utils";
 
 interface ColorInspectProps {
   children: React.ReactNode;
   as?: React.ElementType;
   side?: "left" | "right" | "top" | "bottom";
+  colors: {
+    label: string;
+    value: string;
+  }[];
 }
 
 export const ColorInspect = ({
   children,
   as,
   side = "right",
+  colors,
 }: ColorInspectProps) => {
-  const [hex, setHex] = useState("#40a0d4");
-  const [hex2, setHex2] = useState("#ed2140");
-
-  const Element = as || "span";
+  const { theme, setColor, changeColor } = useTheme();
 
   const [width, setWidth] = useState(0);
 
@@ -41,6 +45,19 @@ export const ColorInspect = ({
   useEffect(() => {
     setWidth(elementRef.current?.offsetWidth);
   }, []);
+
+  const Element = as || "span";
+
+  const themeColors = colors.map(({ value, label }) => {
+    const index = theme.findIndex((color) =>
+      color.cssVariables.includes(value)
+    );
+    return {
+      value,
+      label,
+      index,
+    };
+  });
 
   const renderInwards = window.innerWidth - width < 200 ? true : false;
 
@@ -61,77 +78,65 @@ export const ColorInspect = ({
         alignOffset={renderInwards ? 12 : -8}
       >
         <DropdownMenuLabel>
-          <Accordion type="single" collapsible defaultValue="item-1">
-            <AccordionItem value="item-1">
-              <AccordionTrigger asChild>
-                <div className="w-[200px] flex justify-between items-center p-2 mb-2 hover:bg-muted rounded-md">
-                  <div>Text Color</div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <ColorButton
-                        hex={hex}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          console.log("clicked");
-                        }}
-                      />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      side="right"
-                      align="start"
-                      alignOffset={-62}
-                      sideOffset={24}
-                    >
-                      <DropdownMenuLabel>Select a color</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <div className="flex gap-2 p-2">
-                        <DropdownMenuItem
-                          className="rounded-sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            console.log("Click");
-                          }}
+          <Accordion type="single" collapsible defaultValue="item-0">
+            {themeColors.map(({ value, label, index }, i) => {
+              return (
+                <AccordionItem key={value} value={`item-${i}`} className="">
+                  <AccordionTrigger asChild>
+                    <div className="w-[200px] flex justify-between items-center p-2 mb-2 hover:bg-muted rounded-md">
+                      <div>{label}</div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <ColorButton
+                            hex={theme[index].hex}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log("clicked");
+                            }}
+                          />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          side="right"
+                          align="start"
+                          alignOffset={-62}
+                          sideOffset={24}
                         >
-                          <ColorButton hex="#40a0d4" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <ColorButton hex="#40a0d4" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <ColorButton hex="#40a0d4" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <ColorButton hex="#40a0d4" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <ColorButton hex="#40a0d4" />
-                        </DropdownMenuItem>
-                      </div>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <ColorPicker value={hex} onChange={setHex} />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>
-                <div className="w-[200px] flex justify-between items-center p-2 mb-2 hover:bg-muted rounded-md ">
-                  <div>Text Color</div>
-                  <ColorButton
-                    hex={hex2}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log("clicked");
-                    }}
-                  />
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <ColorPicker value={hex2} onChange={setHex} />
-              </AccordionContent>
-            </AccordionItem>
+                          <DropdownMenuLabel>Select a color</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <div className="flex gap-2 p-2">
+                            {theme
+                              .filter(
+                                ({ cssVariables }) =>
+                                  !cssVariables.includes(value)
+                              )
+                              .map(({ id, hex }, index) => {
+                                return (
+                                  <DropdownMenuItem
+                                    key={id}
+                                    className="rounded-sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      changeColor(value, id);
+                                    }}
+                                  >
+                                    <ColorButton hex={hex} />
+                                  </DropdownMenuItem>
+                                );
+                              })}
+                          </div>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-0">
+                    <ColorPicker
+                      value={theme[index].color}
+                      onChange={setColor(index)}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
         </DropdownMenuLabel>
       </DropdownMenuContent>

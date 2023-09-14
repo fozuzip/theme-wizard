@@ -6,12 +6,18 @@ import useTheme from "@/hooks/useTheme";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ColorSelect } from "@/components/color-select";
 import useIsScrolled from "@/hooks/useIsScrolled";
 import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ColorButton } from "./color-button";
+import { ColorPicker } from "./color-picker";
 
 export const Navbar = () => {
-  const { theme, setName, setColor, addColor } = useTheme();
+  const { theme, setColor, addColor } = useTheme();
   const isScrolled = useIsScrolled();
 
   return (
@@ -35,14 +41,15 @@ export const Navbar = () => {
           <div className="ml-auto flex items-center space-x-8">
             <div className="flex items-center space-x-6">
               <p>Theme Colors</p>
-              {theme.map(({ id, name, color }, index) => (
-                <ColorSelect
-                  key={id}
-                  value={color}
-                  onChange={setColor(index)}
-                  name={name}
-                  onNameChange={setName(index)}
-                />
+              {theme.map(({ id, color, hex }, index) => (
+                <Popover key={id}>
+                  <PopoverTrigger>
+                    <ColorButton hex={hex} />
+                  </PopoverTrigger>
+                  <PopoverContent sideOffset={14} className="w-59 p-3">
+                    <ColorPicker value={color} onChange={setColor(index)} />
+                  </PopoverContent>
+                </Popover>
               ))}
             </div>
             <Separator orientation="vertical" className="h-6" />

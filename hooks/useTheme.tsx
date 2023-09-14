@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import { cssVarToHex } from "@/lib/utils";
+import { useEffect, useState, createContext, useContext } from "react";
 
 // What to do about border and muted ? Also muted text
-
 const initialTheme = [
   {
     id: 1,
@@ -51,9 +53,29 @@ const initialTheme = [
     color: "351 85% 53%",
     cssVariables: ["--destructive"],
   },
-];
+].map((color) => ({ ...color, hex: cssVarToHex(color.color) }));
 
-const useTheme = () => {
+type ThemeContextType = {
+  theme: typeof initialTheme;
+  setName: (index: number) => (name: string) => void;
+  setColor: (index: number) => (color: string) => void;
+  changeColor: (cssVariable: string, id: number) => void;
+  addColor: () => void;
+};
+
+const ThemeContext = createContext({
+  theme: initialTheme,
+  setName: (index: number) => (name: string) => {},
+  setColor: (index: number) => (color: string) => {},
+  changeColor: (cssVariable: string, id: number) => {},
+  addColor: () => {},
+});
+
+export const ThemeContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [theme, setTheme] = useState(initialTheme);
 
   useEffect(() => {
@@ -73,6 +95,7 @@ const useTheme = () => {
   const setColor = (index: number) => (color: string) => {
     const newTheme = [...theme];
     newTheme[index].color = color;
+    newTheme[index].hex = cssVarToHex(color);
     setTheme(newTheme);
 
     for (const variable of newTheme[index].cssVariables) {
@@ -86,16 +109,52 @@ const useTheme = () => {
       id: newTheme.length + 1,
       name: "New Color",
       color: "0 0% 0%",
+      hex: cssVarToHex("0 0% 0%"),
       cssVariables: [],
     });
     setTheme(newTheme);
   };
+
+  const changeColor = (cssVariable: string, id: number) => {
+    const newTheme = theme.map((color) => {
+      // Remove variable if present
+      let cssVariables = color.cssVariables.filter(
+        (variable) => variable !== cssVariable
+      );
+
+      if (color.id === id) {
+        cssVariables = [...cssVariables, cssVariable];
+
+        document.documentElement.style.setProperty(cssVariable, color.color);
+      }
+
+      return {
+        ...color,
+        cssVariables,
+      };
+    });
+    setTheme(newTheme);
+  };
+
+  return (
+    <ThemeContext.Provider
+      value={{ theme, setName, setColor, addColor, changeColor }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+const useTheme = () => {
+  const { theme, setName, setColor, addColor, changeColor } =
+    useContext(ThemeContext);
 
   return {
     theme,
     setName,
     setColor,
     addColor,
+    changeColor,
   };
 };
 
