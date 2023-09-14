@@ -34,7 +34,7 @@ const examples = [
 interface ExamplesNavProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
-  const [selected, setSelected] = useState("tasks");
+  const [selected, setSelected] = useState("cards");
 
   return (
     <div className="relative">

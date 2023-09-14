@@ -1,3 +1,4 @@
+import chroma from "chroma-js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -37,4 +38,11 @@ export function hslToCssString({
   l: number;
 }) {
   return `${h} ${s * 100}% ${l * 100}%`;
+}
+
+export function cssVarToHex(value: string) {
+  const hsl = cssVarStringToHsl(value, true);
+  // @ts-ignore
+  const hex = chroma(hsl).hex();
+  return hex;
 }

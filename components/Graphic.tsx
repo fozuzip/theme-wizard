@@ -1,7 +1,13 @@
+import { ColorInspect } from "./color-inspect";
+
 export const Graphic = () => {
   const Icon = icons[Math.floor(Math.random() * icons.length)];
 
-  return <Icon />;
+  return (
+    <ColorInspect as="div" side="left">
+      <Icon />
+    </ColorInspect>
+  );
 };
 
 const icons = [
