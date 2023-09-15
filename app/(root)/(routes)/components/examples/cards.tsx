@@ -11,9 +11,9 @@ import { DemoTeamMembers } from "./cards/team-members";
 
 export const Cards = () => {
   return (
-    <ColorInspect colors={[]} as="div">
+    <ColorInspect varNames={[]} as="div">
       <div className="items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-3">
-        <ColorInspect colors={[]}>
+        <ColorInspect varNames={[]}>
           <div className="col-span-2 grid items-start gap-6 lg:col-span-1">
             <DemoContainer>
               <DemoCreateAccount />

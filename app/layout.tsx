@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeContextProvider } from "@/hooks/useTheme";
+import { ColorsProvider } from "@/hooks/useColor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,9 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <ThemeContextProvider>
+          <ColorsProvider>
             <TooltipProvider>{children}</TooltipProvider>
-          </ThemeContextProvider>
+          </ColorsProvider>
         </ThemeProvider>
       </body>
     </html>

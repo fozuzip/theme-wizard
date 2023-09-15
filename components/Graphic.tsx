@@ -4,20 +4,7 @@ export const Graphic = () => {
   const Icon = icons[Math.floor(Math.random() * icons.length)];
 
   return (
-    <ColorInspect
-      colors={[
-        {
-          label: "Fills",
-          value: "--primary",
-        },
-        {
-          label: "Outlines",
-          value: "--foreground",
-        },
-      ]}
-      as="div"
-      side="left"
-    >
+    <ColorInspect varNames={["--primary", "--foreground"]} as="div" side="left">
       <Icon />
     </ColorInspect>
   );

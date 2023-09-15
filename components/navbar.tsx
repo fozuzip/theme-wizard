@@ -2,7 +2,6 @@
 
 import { ArrowRight, Dice5, MoonStar, Redo, Undo } from "lucide-react";
 
-import useTheme from "@/hooks/useTheme";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -15,9 +14,10 @@ import {
 } from "@/components/ui/popover";
 import { ColorButton } from "./color-button";
 import { ColorPicker } from "./color-picker";
+import useColors from "@/hooks/useColor";
 
 export const Navbar = () => {
-  const { theme, setColor, addColor } = useTheme();
+  const { uniqueColors, setUniqueColor } = useColors();
   const isScrolled = useIsScrolled();
 
   return (
@@ -41,13 +41,19 @@ export const Navbar = () => {
           <div className="ml-auto flex items-center space-x-8">
             <div className="flex items-center space-x-6">
               <p>Theme Colors</p>
-              {theme.map(({ id, color, hex }, index) => (
-                <Popover key={id}>
+              {uniqueColors.map(({ varName, colorHex, colorHsl }) => (
+                <Popover key={varName}>
                   <PopoverTrigger>
-                    <ColorButton hex={hex} />
+                    <ColorButton hex={colorHex} />
                   </PopoverTrigger>
                   <PopoverContent sideOffset={14} className="w-59 p-3">
-                    <ColorPicker value={color} onChange={setColor(index)} />
+                    <ColorPicker
+                      valueHsl={colorHsl}
+                      valueHex={colorHex}
+                      onChange={(newColor) =>
+                        setUniqueColor(colorHsl, newColor)
+                      }
+                    />
                   </PopoverContent>
                 </Popover>
               ))}
