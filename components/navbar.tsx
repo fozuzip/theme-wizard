@@ -1,6 +1,14 @@
 "use client";
 
-import { ArrowRight, Dice5, MoonStar, Redo, Undo } from "lucide-react";
+import {
+  ArrowRight,
+  Dice5,
+  MoonStar,
+  Redo,
+  Undo,
+  Unlock,
+  Lock,
+} from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { Logo } from "@/components/logo";
@@ -16,13 +24,26 @@ import {
 import { ColorButton } from "./color-button";
 import { ColorPicker } from "./color-picker";
 import useColors from "@/hooks/useColor";
+import { useState } from "react";
 
 export const Navbar = () => {
-  const { uniqueColors, setUniqueColor, undo, canUndo, redo, canRedo, save } =
-    useColors();
+  const {
+    uniqueColors,
+    setUniqueColor,
+    undo,
+    canUndo,
+    redo,
+    canRedo,
+    save,
+    setUniqueLock,
+    setLockAllColors,
+  } = useColors();
+
+  const [colorLock, setColorLock] = useState(false);
 
   const isScrolled = useIsScrolled();
 
+  // TODO : Multiple hotkeys ?
   useHotkeys(
     "ctrl+z",
     () => {
@@ -37,6 +58,17 @@ export const Navbar = () => {
     },
     [redo]
   );
+
+  useHotkeys(
+    "l",
+    () => {
+      setColorLock(!colorLock);
+      setLockAllColors(!colorLock);
+    },
+    [redo]
+  );
+
+  const LockIcon = colorLock ? Lock : Unlock;
 
   return (
     <header
@@ -56,10 +88,9 @@ export const Navbar = () => {
             <Logo />
             <h1 className="font-bold text-2xl">theme wizard</h1>
           </a>
-          <div className="ml-auto flex items-center space-x-8">
+          <div className="ml-auto flex items-center space-x-6">
             <div className="flex items-center space-x-6">
-              <p>Theme Colors</p>
-              {uniqueColors.map(({ varName, colorHex, colorHsl }) => (
+              {uniqueColors.map(({ varName, colorHex, colorHsl, locked }) => (
                 <Popover
                   key={varName}
                   onOpenChange={(open) => {
@@ -69,7 +100,7 @@ export const Navbar = () => {
                   }}
                 >
                   <PopoverTrigger>
-                    <ColorButton hex={colorHex} />
+                    <ColorButton hex={colorHex} isLocked={locked} />
                   </PopoverTrigger>
                   <PopoverContent sideOffset={14} className="w-59 p-3">
                     <ColorPicker
@@ -78,10 +109,21 @@ export const Navbar = () => {
                       onChange={(newColor) =>
                         setUniqueColor(colorHsl, newColor)
                       }
+                      isLocked={locked}
+                      toggleLock={(value) => setUniqueLock(colorHsl, value)}
                     />
                   </PopoverContent>
                 </Popover>
               ))}
+              <Button variant="ghost" size="icon">
+                <LockIcon
+                  className="w-4 h-4"
+                  onClick={() => {
+                    setColorLock(!colorLock);
+                    setLockAllColors(!colorLock);
+                  }}
+                />
+              </Button>
             </div>
             <Separator orientation="vertical" className="h-6" />
             <div className="flex items-center space-x-2">

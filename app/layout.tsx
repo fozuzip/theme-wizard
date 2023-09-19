@@ -31,7 +31,7 @@ export default function RootLayout({
   );
 }
 
-// TODO: Undo / Redo functionality
+// DONE: Undo / Redo functionality
 // TODO: Lock Colors
 // TODO: Randomize Colors
 // TODO: Export Colors
@@ -47,3 +47,5 @@ export default function RootLayout({
 // TODO: Footer with links ...
 
 // TODO: Fix Navbar flickering
+
+// TODO: Add toolbars with Short desc and hotkeys on every button

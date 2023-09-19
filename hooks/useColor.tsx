@@ -15,8 +15,6 @@ import {
   useRef,
 } from "react";
 import { useHistoryState } from "./useHistoryState";
-import { throttle } from "lodash";
-import { useThrottle } from "./useThrottle";
 
 const input = `
 --background: 222.2 84% 4.9%;
@@ -51,6 +49,7 @@ export type Color = {
   colorHsl: Hsl;
   displayName: string;
   colorHex: string;
+  locked: boolean;
 };
 
 function parseCSSVariables(input: string): Color[] {
@@ -76,6 +75,7 @@ function parseCSSVariables(input: string): Color[] {
   return result.map((color) => ({
     ...color,
     colorHex: hslToHex(color.colorHsl),
+    locked: false,
   }));
 }
 
@@ -92,6 +92,9 @@ type ColorsContextType = {
   redo: () => void;
   canRedo: boolean;
   save: () => void;
+  setLock: (varName: string, locked: boolean) => void;
+  setUniqueLock: (colorHsl: Hsl, locked: boolean) => void;
+  setLockAllColors: (locked: boolean) => void;
 };
 
 const ColorsContext = createContext<ColorsContextType>({
@@ -105,6 +108,9 @@ const ColorsContext = createContext<ColorsContextType>({
   redo: () => {},
   canRedo: false,
   save: () => {},
+  setLock: (varName: string, locked: boolean) => {},
+  setUniqueLock: () => {},
+  setLockAllColors: () => {},
 });
 
 export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
@@ -133,7 +139,7 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setColor = (varName: string, color: Hsl | string) => {
     const newColors = colors.map((c) => {
-      if (c.varName === varName) {
+      if (c.varName === varName && !c.locked) {
         const newColor = {
           ...c,
         };
@@ -191,7 +197,8 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
       if (
         c.colorHsl.h === colorHsl.h &&
         c.colorHsl.s === colorHsl.s &&
-        c.colorHsl.l === colorHsl.l
+        c.colorHsl.l === colorHsl.l &&
+        !c.locked
       ) {
         const newC = {
           ...c,
@@ -219,6 +226,60 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     setColors(newColors);
   };
 
+  const setLock = (varName: string, locked: boolean) => {
+    const newColors = colors.map((c) => {
+      if (c.varName === varName) {
+        const newColor = {
+          ...c,
+        };
+
+        newColor.locked = locked;
+
+        return newColor;
+      } else {
+        return c;
+      }
+    });
+
+    setColors(newColors);
+  };
+
+  const setUniqueLock = (colorHsl: Hsl, locked: boolean) => {
+    const newColors = colors.map((c) => {
+      if (
+        c.colorHsl.h === colorHsl.h &&
+        c.colorHsl.s === colorHsl.s &&
+        c.colorHsl.l === colorHsl.l
+      ) {
+        const newC = {
+          ...c,
+        };
+
+        newC.locked = locked;
+
+        return newC;
+      } else {
+        return c;
+      }
+    });
+
+    setColors(newColors);
+  };
+
+  const setLockAllColors = (locked: boolean) => {
+    const newColors = colors.map((c) => {
+      const newC = {
+        ...c,
+      };
+
+      newC.locked = locked;
+
+      return newC;
+    });
+
+    setColors(newColors);
+  };
+
   return (
     <ColorsContext.Provider
       value={{
@@ -232,6 +293,9 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         redo,
         canRedo,
         save,
+        setLock,
+        setUniqueLock,
+        setLockAllColors,
       }}
     >
       {children}

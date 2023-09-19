@@ -32,7 +32,7 @@ export const ColorInspect = ({
   side = "right",
   varNames,
 }: ColorInspectProps) => {
-  const { colors, getColor, setColor, save } = useColors();
+  const { getColor, setColor, save, setUniqueLock } = useColors();
 
   let themeColors = varNames
     .map(getColor)
@@ -74,7 +74,7 @@ export const ColorInspect = ({
         <DropdownMenuLabel>
           <Accordion type="single" collapsible defaultValue="item-0">
             {themeColors.map(
-              ({ displayName, varName, colorHex, colorHsl }, i) => {
+              ({ displayName, varName, colorHex, colorHsl, locked }, i) => {
                 return (
                   <AccordionItem key={varName} value={`item-${i}`} className="">
                     <AccordionTrigger asChild>
@@ -83,6 +83,7 @@ export const ColorInspect = ({
 
                         <ColorButton
                           hex={colorHex}
+                          isLocked={locked}
                           onClick={(e) => {
                             e.stopPropagation();
                           }}
@@ -94,6 +95,8 @@ export const ColorInspect = ({
                         valueHsl={colorHsl}
                         valueHex={colorHex}
                         onChange={(newColor) => setColor(varName, newColor)}
+                        isLocked={locked}
+                        toggleLock={(value) => setUniqueLock(colorHsl, value)}
                       />
                     </AccordionContent>
                   </AccordionItem>

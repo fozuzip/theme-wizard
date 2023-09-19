@@ -5,7 +5,7 @@ import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 interface ClipboardButtonProps {
-  value: string;
+  value: string | number | readonly string[] | undefined;
 }
 
 export const ClipboardButton = ({ value }: ClipboardButtonProps) => {
@@ -13,7 +13,7 @@ export const ClipboardButton = ({ value }: ClipboardButtonProps) => {
 
   const copyToClipboard = () => {
     navigator.clipboard
-      .writeText(value)
+      .writeText(value as string)
       .then(() => {
         setShowDone(true);
         setTimeout(() => {

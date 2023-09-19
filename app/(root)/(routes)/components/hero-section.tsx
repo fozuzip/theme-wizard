@@ -14,7 +14,7 @@ export const HeroSection = () => {
           className="h-7 text-base font-semibold leading-7 text-primary"
           aria-hidden="true"
         >
-          <ColorInspect varNames={["--primary"]}>
+          <ColorInspect varNames={["--primary", "--background"]}>
             An interactive design tool
           </ColorInspect>
         </div>
