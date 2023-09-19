@@ -7,10 +7,6 @@ export const useHistoryState = <T>(initialState: T) => {
   const [history, setHistory] = useState<T[]>([]);
   const [future, setFuture] = useState<T[]>([]);
 
-  useEffect(() => {
-    console.log({ state, history, future });
-  }, [history, future]);
-
   const save = () => {
     if (lastState === state) return;
     console.log("save");

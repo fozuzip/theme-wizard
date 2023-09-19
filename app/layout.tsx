@@ -38,7 +38,7 @@ export default function RootLayout({
 
 // TODO: Light / Dark mode
 
-// TODO: Background Color Select Component
+// DONE: Background Color Select Component
 
 // TODO: Font Select Functionality ?
 
