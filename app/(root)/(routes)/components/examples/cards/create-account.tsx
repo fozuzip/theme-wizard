@@ -1,5 +1,6 @@
 "use client";
 
+import { ColorInspect } from "@/components/color-inspect";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,7 +54,9 @@ export function DemoCreateAccount() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Create account</Button>
+        <ColorInspect varNames={["--primary"]}>
+          <Button className="w-full">Create account</Button>
+        </ColorInspect>
       </CardFooter>
     </Card>
   );
