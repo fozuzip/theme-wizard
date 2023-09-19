@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, Dice5, MoonStar, Redo, Undo } from "lucide-react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,23 @@ import useColors from "@/hooks/useColor";
 export const Navbar = () => {
   const { uniqueColors, setUniqueColor, undo, canUndo, redo, canRedo, save } =
     useColors();
+
   const isScrolled = useIsScrolled();
+
+  useHotkeys(
+    "ctrl+z",
+    () => {
+      if (canUndo) undo();
+    },
+    [undo]
+  );
+  useHotkeys(
+    "shift+ctrl+z",
+    () => {
+      if (canRedo) redo();
+    },
+    [redo]
+  );
 
   return (
     <header
