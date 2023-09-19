@@ -32,7 +32,7 @@ export const ColorInspect = ({
   side = "right",
   varNames,
 }: ColorInspectProps) => {
-  const { colors, getColor, setColor } = useColors();
+  const { colors, getColor, setColor, save } = useColors();
 
   let themeColors = varNames
     .map(getColor)
@@ -49,7 +49,14 @@ export const ColorInspect = ({
   const Element = as || "span";
 
   return (
-    <DropdownMenu modal>
+    <DropdownMenu
+      modal
+      onOpenChange={(open) => {
+        if (!open) {
+          save();
+        }
+      }}
+    >
       <DropdownMenuTrigger asChild>
         <Element
           ref={elementRef}

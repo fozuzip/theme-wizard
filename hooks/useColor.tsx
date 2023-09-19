@@ -6,7 +6,17 @@ import {
   hslToCssString,
   hslToHex,
 } from "@/lib/utils";
-import { useEffect, useState, createContext, useContext, useMemo } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+  useMemo,
+  useRef,
+} from "react";
+import { useHistoryState } from "./useHistoryState";
+import { throttle } from "lodash";
+import { useThrottle } from "./useThrottle";
 
 const input = `
 --background: 222.2 84% 4.9%;
@@ -77,6 +87,11 @@ type ColorsContextType = {
   setColor: (varName: string, color: Hsl | string) => void;
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => void;
   getColor: (varName: string) => Color | undefined;
+  undo: () => void;
+  canUndo: boolean;
+  redo: () => void;
+  canRedo: boolean;
+  save: () => void;
 };
 
 const ColorsContext = createContext<ColorsContextType>({
@@ -85,10 +100,23 @@ const ColorsContext = createContext<ColorsContextType>({
   setColor: (varName: string, color: Hsl | string) => {},
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => {},
   getColor: () => undefined,
+  undo: () => {},
+  canUndo: false,
+  redo: () => {},
+  canRedo: false,
+  save: () => {},
 });
 
 export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [colors, setColors] = useState(initialColors);
+  const {
+    state: colors,
+    set: setColors,
+    undo,
+    canUndo,
+    redo,
+    canRedo,
+    save,
+  } = useHistoryState(initialColors);
 
   const updateCssVariable = (color: Color) => {
     document.documentElement.style.setProperty(
@@ -101,7 +129,7 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     for (const color of colors) {
       updateCssVariable(color);
     }
-  }, []);
+  }, [colors]);
 
   const setColor = (varName: string, color: Hsl | string) => {
     const newColors = colors.map((c) => {
@@ -123,8 +151,6 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
 
         newColor.colorHsl = colorHsl;
         newColor.colorHex = colorHex;
-
-        updateCssVariable(newColor);
 
         return newColor;
       } else {
@@ -184,10 +210,6 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         newC.colorHsl = colorHsl;
         newC.colorHex = colorHex;
 
-        updateCssVariable(newC);
-
-        console.log(newColor, newC);
-
         return newC;
       } else {
         return c;
@@ -205,6 +227,11 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         setColor,
         setUniqueColor,
         getColor,
+        undo,
+        canUndo,
+        redo,
+        canRedo,
+        save,
       }}
     >
       {children}

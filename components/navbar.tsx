@@ -17,7 +17,8 @@ import { ColorPicker } from "./color-picker";
 import useColors from "@/hooks/useColor";
 
 export const Navbar = () => {
-  const { uniqueColors, setUniqueColor } = useColors();
+  const { uniqueColors, setUniqueColor, undo, canUndo, redo, canRedo, save } =
+    useColors();
   const isScrolled = useIsScrolled();
 
   return (
@@ -42,7 +43,14 @@ export const Navbar = () => {
             <div className="flex items-center space-x-6">
               <p>Theme Colors</p>
               {uniqueColors.map(({ varName, colorHex, colorHsl }) => (
-                <Popover key={varName}>
+                <Popover
+                  key={varName}
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      save();
+                    }
+                  }}
+                >
                   <PopoverTrigger>
                     <ColorButton hex={colorHex} />
                   </PopoverTrigger>
@@ -66,10 +74,20 @@ export const Navbar = () => {
               <Button size="icon" variant="ghost">
                 <MoonStar size={20} />
               </Button>
-              <Button size="icon" variant="ghost">
+              <Button
+                size="icon"
+                variant="ghost"
+                disabled={!canUndo}
+                onClick={() => undo()}
+              >
                 <Undo size={20} />
               </Button>
-              <Button size="icon" variant="ghost">
+              <Button
+                size="icon"
+                variant="ghost"
+                disabled={!canRedo}
+                onClick={() => redo()}
+              >
                 <Redo size={20} />
               </Button>
             </div>
