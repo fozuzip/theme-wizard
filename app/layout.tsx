@@ -32,7 +32,7 @@ export default function RootLayout({
 }
 
 // DONE: Undo / Redo functionality
-// TODO: Lock Colors
+// DONE: Lock Colors
 // TODO: Randomize Colors
 // TODO: Export Colors
 
