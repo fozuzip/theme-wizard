@@ -30,3 +30,20 @@ export default function RootLayout({
     </html>
   );
 }
+
+// TODO: Undo / Redo functionality
+// TODO: Lock Colors
+// TODO: Randomize Colors
+// TODO: Export Colors
+
+// TODO: Light / Dark mode
+
+// TODO: Background Color Select Component
+
+// TODO: Font Select Functionality ?
+
+// TODO: Tour How it works / Choose Main Colors / Typography Inputs / etc ... / Test it out
+
+// TODO: Footer with links ...
+
+// TODO: Fix Navbar flickering
