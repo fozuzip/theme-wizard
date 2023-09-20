@@ -9,9 +9,9 @@ import { ColorBackgroundSelect } from "@/components/color-background-select";
 
 export const HeroSection = () => {
   return (
-    <section className="flex h-[400px]">
+    <section className="flex h-[400px] bg-card rounded-lg py-8">
       <ColorBackgroundSelect varName={"--card"}>
-        <div className="bg-card p-2 rounded-md">
+        <div className=" p-2 rounded-md">
           <div
             className="h-7 text-base font-semibold leading-7 text-primary"
             aria-hidden="true"
@@ -33,8 +33,8 @@ export const HeroSection = () => {
             </ColorInspect>
           </h1>
 
-          <ColorInspect varNames={["--foreground"]}>
-            <p className="col-start-1 row-start-3 mt-4 max-w-lg text-lg text-foreground/60">
+          <ColorInspect varNames={["--muted-foreground"]}>
+            <p className="col-start-1 row-start-3 mt-4 max-w-lg text-lg text-muted-foreground">
               Choose the colour pallete for your next app, website, blog.
               Optimized to work with tailwind css and shadcn-ui.
             </p>

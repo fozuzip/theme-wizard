@@ -3,16 +3,12 @@
 import { hexToHsl, hslToCssString, hslToHex } from "@/lib/utils";
 import { useEffect, createContext, useContext, useMemo, useState } from "react";
 import { useHistoryState } from "../hooks/useHistoryState";
-import {
-  Color,
-  Hsl,
-  initialThemeDark,
-  initialThemeLight,
-  parseCSSVariables,
-} from "./utils";
+import { Color, Hsl, parseCSSVariables, themes } from "./utils";
 
-const initialColorsLight = parseCSSVariables(initialThemeLight);
-const initialColorsDark = parseCSSVariables(initialThemeDark);
+const randomIndex = Math.floor(Math.random() * themes.length);
+
+const initialColorsLight = parseCSSVariables(themes[randomIndex].light);
+const initialColorsDark = parseCSSVariables(themes[randomIndex].dark);
 
 type ColorsContextType = {
   mode: "light" | "dark";
@@ -31,6 +27,7 @@ type ColorsContextType = {
   setUniqueLock: (colorHsl: Hsl, locked: boolean) => void;
   setLockAllColors: (locked: boolean) => void;
   toggleMode: () => void;
+  randomize: () => void;
 };
 
 const ColorsContext = createContext<ColorsContextType>({
@@ -50,6 +47,7 @@ const ColorsContext = createContext<ColorsContextType>({
   setUniqueLock: () => {},
   setLockAllColors: () => {},
   toggleMode: () => {},
+  randomize: () => {},
 });
 
 export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
@@ -235,6 +233,15 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     setColors(newColors);
   };
 
+  const randomize = () => {
+    const randomIndex = Math.floor(Math.random() * themes.length);
+    const theme = themes[randomIndex];
+
+    const colors = parseCSSVariables(theme[mode]);
+
+    setColors(colors);
+  };
+
   return (
     <ColorsContext.Provider
       value={{
@@ -254,6 +261,7 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         setUniqueLock,
         setLockAllColors,
         toggleMode,
+        randomize,
       }}
     >
       {children}

@@ -38,6 +38,7 @@ export const Navbar = () => {
     setUniqueLock,
     setLockAllColors,
     toggleMode,
+    randomize,
   } = useColors();
 
   const [colorLock, setColorLock] = useState(false);
@@ -128,7 +129,7 @@ export const Navbar = () => {
             </div>
             <Separator orientation="vertical" className="h-6" />
             <div className="flex items-center space-x-2">
-              <Button size="icon" variant="ghost">
+              <Button size="icon" variant="ghost" onClick={randomize}>
                 <Dice5 size={20} />
               </Button>
               <Button size="icon" variant="ghost" onClick={toggleMode}>

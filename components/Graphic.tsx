@@ -1,11 +1,24 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { ColorInspect } from "./color-inspect";
 
 export const Graphic = () => {
-  const Icon = icons[Math.floor(Math.random() * icons.length)];
+  const firstIcon = icons[Math.floor(Math.random() * icons.length)];
+
+  const [icon, setIcon] = useState(firstIcon);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const newIcon = icons[Math.floor(Math.random() * icons.length)];
+      setIcon(newIcon);
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <ColorInspect varNames={["--primary", "--foreground"]} as="div" side="left">
-      <Icon />
+      {icon}
     </ColorInspect>
   );
 };

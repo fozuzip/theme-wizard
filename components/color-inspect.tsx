@@ -15,7 +15,8 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { ColorPicker } from "./color-picker";
-import useColors, { Color } from "@/theme/useColor";
+import useColors from "@/theme/useColor";
+import { Color } from "@/theme/utils";
 
 interface ColorInspectProps {
   children: React.ReactNode;
