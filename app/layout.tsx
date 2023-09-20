@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ColorsProvider } from "@/theme/useColor";
 
@@ -21,11 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <ColorsProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-          </ColorsProvider>
-        </ThemeProvider>
+        <ColorsProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </ColorsProvider>
       </body>
     </html>
   );
