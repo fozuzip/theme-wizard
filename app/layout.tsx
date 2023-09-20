@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ColorsProvider } from "@/hooks/useColor";
+import { ColorsProvider } from "@/theme/useColor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,7 +36,7 @@ export default function RootLayout({
 // TODO: Randomize Colors
 // TODO: Export Colors
 
-// TODO: Light / Dark mode
+// DONE: Light / Dark mode
 
 // DONE: Background Color Select Component
 

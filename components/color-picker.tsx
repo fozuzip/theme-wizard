@@ -1,6 +1,6 @@
 import { HslColorPicker } from "react-colorful";
 
-import type { Hsl } from "@/hooks/useColor";
+import type { Hsl } from "@/theme/useColor";
 import { Input } from "./ui/input";
 import { ChangeEvent, useEffect, useState } from "react";
 import chroma from "chroma-js";

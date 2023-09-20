@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/popover";
 import { ColorButton } from "./color-button";
 import { ColorPicker } from "./color-picker";
-import useColors from "@/hooks/useColor";
+import useColors from "@/theme/useColor";
 import { useState } from "react";
 
 export const Navbar = () => {
@@ -37,6 +37,7 @@ export const Navbar = () => {
     save,
     setUniqueLock,
     setLockAllColors,
+    toggleMode,
   } = useColors();
 
   const [colorLock, setColorLock] = useState(false);
@@ -130,7 +131,7 @@ export const Navbar = () => {
               <Button size="icon" variant="ghost">
                 <Dice5 size={20} />
               </Button>
-              <Button size="icon" variant="ghost">
+              <Button size="icon" variant="ghost" onClick={toggleMode}>
                 <MoonStar size={20} />
               </Button>
               <Button

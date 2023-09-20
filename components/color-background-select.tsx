@@ -1,6 +1,6 @@
 "use client";
 
-import useColors from "@/hooks/useColor";
+import useColors from "@/theme/useColor";
 
 import { ColorButton } from "./color-button";
 import {

@@ -1,88 +1,23 @@
 "use client";
 
+import { hexToHsl, hslToCssString, hslToHex } from "@/lib/utils";
+import { useEffect, createContext, useContext, useMemo, useState } from "react";
+import { useHistoryState } from "../hooks/useHistoryState";
 import {
-  cssVarStringToHsl,
-  hexToHsl,
-  hslToCssString,
-  hslToHex,
-} from "@/lib/utils";
-import {
-  useEffect,
-  useState,
-  createContext,
-  useContext,
-  useMemo,
-  useRef,
-} from "react";
-import { useHistoryState } from "./useHistoryState";
+  Color,
+  Hsl,
+  initialThemeDark,
+  initialThemeLight,
+  parseCSSVariables,
+} from "./utils";
 
-const input = `
---background: 222.2 84% 4.9%;
---foreground: 210 40% 98%;
---card: 222.2 84% 4.9%;
---card-foreground: 210 40% 98%;
---popover: 222.2 84% 4.9%;
---popover-foreground: 210 40% 98%;
---primary: 217.2 91.2% 59.8%;
---primary-foreground: 222.2 47.4% 11.2%;
---secondary: 217.2 32.6% 17.5%;
---secondary-foreground: 210 40% 98%;
---muted: 217.2 32.6% 17.5%;
---muted-foreground: 215 20.2% 65.1%;
---accent: 217.2 32.6% 17.5%;
---accent-foreground: 210 40% 98%;
---destructive: 0 62.8% 30.6%;
---destructive-foreground: 210 40% 98%;
---border: 217.2 32.6% 17.5%;
---input: 217.2 32.6% 17.5%;
---ring: 224.3 76.3% 48%;
-`;
-
-export type Hsl = {
-  h: number;
-  s: number;
-  l: number;
-};
-
-export type Color = {
-  varName: string;
-  colorHsl: Hsl;
-  displayName: string;
-  colorHex: string;
-  locked: boolean;
-};
-
-function parseCSSVariables(input: string): Color[] {
-  const lines = input.split("\n");
-  const result = [];
-
-  for (const line of lines) {
-    const [varName, colorHsl] = line.split(":").map((part) => part.trim());
-
-    if (varName && colorHsl) {
-      let displayName = varName.replace("--", "").replace(/-/g, " ");
-      // Capitalize first letter of each word
-      displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-
-      result.push({
-        varName,
-        colorHsl: cssVarStringToHsl(colorHsl),
-        displayName,
-      });
-    }
-  }
-
-  return result.map((color) => ({
-    ...color,
-    colorHex: hslToHex(color.colorHsl),
-    locked: false,
-  }));
-}
-
-const initialColors = parseCSSVariables(input);
+const initialColorsLight = parseCSSVariables(initialThemeLight);
+const initialColorsDark = parseCSSVariables(initialThemeDark);
 
 type ColorsContextType = {
+  mode: "light" | "dark";
   colors: Color[];
+  otherModeColors: Color[];
   uniqueColors: (Color & { varNames: string[] })[];
   setColor: (varName: string, color: Hsl | string) => void;
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => void;
@@ -95,10 +30,13 @@ type ColorsContextType = {
   setLock: (varName: string, locked: boolean) => void;
   setUniqueLock: (colorHsl: Hsl, locked: boolean) => void;
   setLockAllColors: (locked: boolean) => void;
+  toggleMode: () => void;
 };
 
 const ColorsContext = createContext<ColorsContextType>({
-  colors: initialColors,
+  mode: "dark",
+  colors: initialColorsDark,
+  otherModeColors: initialColorsLight,
   uniqueColors: [],
   setColor: (varName: string, color: Hsl | string) => {},
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => {},
@@ -111,9 +49,15 @@ const ColorsContext = createContext<ColorsContextType>({
   setLock: (varName: string, locked: boolean) => {},
   setUniqueLock: () => {},
   setLockAllColors: () => {},
+  toggleMode: () => {},
 });
 
 export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
+  const [mode, setMode] = useState<"light" | "dark">("dark");
+
+  const darkColors = useHistoryState(initialColorsDark);
+  const lightColors = useHistoryState(initialColorsLight);
+
   const {
     state: colors,
     set: setColors,
@@ -122,7 +66,18 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     redo,
     canRedo,
     save,
-  } = useHistoryState(initialColors);
+  } = useMemo(
+    () => (mode === "dark" ? darkColors : lightColors),
+    [mode, darkColors, lightColors]
+  );
+  const otherModeColors = useMemo(
+    () => (mode === "dark" ? lightColors.state : darkColors.state),
+    [mode, darkColors, lightColors]
+  );
+
+  const toggleMode = () => {
+    setMode((m) => (m === "dark" ? "light" : "dark"));
+  };
 
   const updateCssVariable = (color: Color) => {
     document.documentElement.style.setProperty(
@@ -283,7 +238,9 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <ColorsContext.Provider
       value={{
+        mode,
         colors,
+        otherModeColors,
         uniqueColors,
         setColor,
         setUniqueColor,
@@ -296,6 +253,7 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         setLock,
         setUniqueLock,
         setLockAllColors,
+        toggleMode,
       }}
     >
       {children}

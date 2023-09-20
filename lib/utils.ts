@@ -1,4 +1,4 @@
-import { Hsl } from "@/hooks/useColor";
+import { Hsl } from "@/theme/useColor";
 import chroma from "chroma-js";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";

@@ -1,4 +1,3 @@
-import { ColorBackgroundSelect } from "@/components/color-background-select";
 import { Navbar } from "@/components/navbar";
 
 export default function RootLayout({
