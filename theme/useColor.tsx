@@ -1,9 +1,18 @@
 "use client";
 
-import { hexToHsl, hslToCssString, hslToHex } from "@/lib/utils";
 import { useEffect, createContext, useContext, useMemo, useState } from "react";
 import { useHistoryState } from "../hooks/useHistoryState";
-import { Color, Hsl, parseCSSVariables, themes } from "./utils";
+import {
+  Color,
+  Hsl,
+  parseCSSVariables,
+  themes,
+  hexToHsl,
+  hslToCssString,
+  hslToHex,
+  createColor,
+  randomColor,
+} from "./utils";
 
 const randomIndex = Math.floor(Math.random() * themes.length);
 
@@ -234,12 +243,16 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const randomize = () => {
-    const randomIndex = Math.floor(Math.random() * themes.length);
-    const theme = themes[randomIndex];
+    const newTheme = [createColor("--background", randomColor())];
 
-    const colors = parseCSSVariables(theme[mode]);
+    const newColors = colors.map((color) => {
+      if (color.locked) return color;
 
-    setColors(colors);
+      const newColor = newTheme.find((c) => c.varName === color.varName);
+      return newColor ?? color;
+    });
+
+    setColors(newColors);
   };
 
   return (

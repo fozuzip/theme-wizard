@@ -25,6 +25,7 @@ import { ColorButton } from "./color-button";
 import { ColorPicker } from "./color-picker";
 import useColors from "@/theme/useColor";
 import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export const Navbar = () => {
   const {
@@ -92,31 +93,42 @@ export const Navbar = () => {
           </a>
           <div className="ml-auto flex items-center space-x-6">
             <div className="flex items-center space-x-6">
-              {uniqueColors.map(({ varName, colorHex, colorHsl, locked }) => (
-                <Popover
-                  key={varName}
-                  onOpenChange={(open) => {
-                    if (!open) {
-                      save();
-                    }
-                  }}
-                >
-                  <PopoverTrigger>
-                    <ColorButton hex={colorHex} isLocked={locked} />
-                  </PopoverTrigger>
-                  <PopoverContent sideOffset={14} className="w-59 p-3">
-                    <ColorPicker
-                      valueHsl={colorHsl}
-                      valueHex={colorHex}
-                      onChange={(newColor) =>
-                        setUniqueColor(colorHsl, newColor)
+              {uniqueColors.map(
+                ({ varName, colorHex, colorHsl, locked, varNames }) => (
+                  <Popover
+                    key={varName}
+                    onOpenChange={(open) => {
+                      if (!open) {
+                        save();
                       }
-                      isLocked={locked}
-                      toggleLock={(value) => setUniqueLock(colorHsl, value)}
-                    />
-                  </PopoverContent>
-                </Popover>
-              ))}
+                    }}
+                  >
+                    <PopoverTrigger>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <ColorButton hex={colorHex} isLocked={locked} />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {varNames.map((varName) => (
+                            <p>{varName}</p>
+                          ))}
+                        </TooltipContent>
+                      </Tooltip>
+                    </PopoverTrigger>
+                    <PopoverContent sideOffset={14} className="w-59 p-3">
+                      <ColorPicker
+                        valueHsl={colorHsl}
+                        valueHex={colorHex}
+                        onChange={(newColor) =>
+                          setUniqueColor(colorHsl, newColor)
+                        }
+                        isLocked={locked}
+                        toggleLock={(value) => setUniqueLock(colorHsl, value)}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                )
+              )}
               <Button variant="ghost" size="icon">
                 <LockIcon
                   className="w-4 h-4"

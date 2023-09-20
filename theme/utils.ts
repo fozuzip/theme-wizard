@@ -1,4 +1,4 @@
-import { cssVarStringToHsl, hslToHex } from "@/lib/utils";
+import chroma from "chroma-js";
 
 export const themes = [
   {
@@ -193,6 +193,49 @@ export type Color = {
   locked: boolean;
 };
 
+export function cssVarStringToHsl(value: string, percentage = false) {
+  let hue = 0;
+  let saturation = 0;
+  let lightness = 0;
+
+  // Regular expression to match numbers
+  const numberPattern = /(\d+(\.\d+)?)/g;
+
+  // Extract the numbers from the HSLA string
+  const extractedNumbers = value.match(numberPattern);
+
+  if (extractedNumbers && extractedNumbers.length >= 3) {
+    hue = parseFloat(extractedNumbers[0]);
+    saturation = parseFloat(extractedNumbers[1]);
+    if (percentage) saturation = saturation / 100;
+    lightness = parseFloat(extractedNumbers[2]);
+    if (percentage) lightness = lightness / 100;
+  }
+
+  return { h: hue, s: saturation, l: lightness };
+}
+
+export function hslToCssString({
+  h,
+  s,
+  l,
+}: {
+  h: number;
+  s: number;
+  l: number;
+}) {
+  return `${h} ${s}% ${l}%`;
+}
+
+export function hslToHex(color: Hsl) {
+  return chroma.hsl(color.h, color.s / 100, color.l / 100).hex();
+}
+
+export function hexToHsl(color: string) {
+  const hsl = chroma(color).hsl();
+  return { h: hsl[0], s: hsl[1] * 100, l: hsl[2] * 100 };
+}
+
 export const parseCSSVariables = (input: string): Color[] => {
   const lines = input.split("\n");
   const result = [];
@@ -219,3 +262,67 @@ export const parseCSSVariables = (input: string): Color[] => {
     locked: false,
   }));
 };
+
+export function createColor(varName: string, colorHsl: Hsl) {
+  return {
+    varName,
+    colorHsl,
+    displayName: varName.replace("--", "").replace(/-/g, " "),
+    colorHex: hslToHex(colorHsl),
+    locked: false,
+  };
+}
+
+export function randomColor() {
+  return {
+    h: Math.random() * 360,
+    s: Math.random() * 100,
+    l: Math.random() * 100,
+  };
+}
+
+export function generateComplementaryColors(numColors: number) {
+  const colors = [];
+  const baseHue = Math.floor(Math.random() * 360); // Random starting hue between 0 and 360
+
+  for (let i = 0; i < numColors; i++) {
+    // Calculate complementary hue by adding 180 degrees
+    const hue = (baseHue + i * (360 / numColors)) % 360;
+    const saturation = 50; // You can adjust this value as needed (0-100%)
+    const lightness = 50; // You can adjust this value as needed (0-100%)
+
+    colors.push({ h: hue, s: saturation, l: lightness });
+  }
+
+  return colors;
+}
+
+export function generateMonochromaticColors(numColors: number) {
+  const colors = [];
+  const baseHue = Math.floor(Math.random() * 360); // Random starting hue between 0 and 360
+
+  for (let i = 0; i < numColors; i++) {
+    const lightness = (i / (numColors - 1)) * 100; // Vary lightness from 0% to 100%
+    const saturation = 50; // You can adjust this value as needed (0-100%)
+
+    colors.push({ h: baseHue, s: saturation, l: lightness });
+  }
+
+  return colors;
+}
+
+export function generateAnalogousColors(numColors: number) {
+  const colors = [];
+  const baseHue = Math.floor(Math.random() * 360); // Random starting hue between 0 and 360
+  const separationAngle = 30; // Separation angle between analogous colors in degrees
+
+  for (let i = 0; i < numColors; i++) {
+    const hue = (baseHue + i * separationAngle) % 360; // Vary the hue
+    const saturation = 50; // You can adjust this value as needed (0-100%)
+    const lightness = 50; // You can adjust this value as needed (0-100%)
+
+    colors.push({ h: hue, s: saturation, l: lightness });
+  }
+
+  return colors;
+}
