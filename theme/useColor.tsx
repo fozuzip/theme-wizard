@@ -253,6 +253,7 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     setColors(newColors);
+    save();
   };
 
   return (

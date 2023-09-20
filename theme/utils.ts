@@ -326,3 +326,14 @@ export function generateAnalogousColors(numColors: number) {
 
   return colors;
 }
+
+export function parseColors(colors: Color[]) {
+  const formattedColors = colors.map((colorObj) => {
+    const { varName, colorHsl } = colorObj;
+    const { h, s, l } = colorHsl;
+    const formattedColor = `\t${varName}: ${h} ${s}% ${l}%`;
+    return formattedColor;
+  });
+
+  return formattedColors.join("\n");
+}
