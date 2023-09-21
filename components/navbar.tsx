@@ -80,6 +80,14 @@ export const Navbar = () => {
     [redo]
   );
 
+  useHotkeys(
+    "rr",
+    () => {
+      randomize();
+    },
+    [redo]
+  );
+
   const LockIcon = colorLock ? Lock : Unlock;
 
   return (

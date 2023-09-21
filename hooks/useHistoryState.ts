@@ -9,7 +9,7 @@ export const useHistoryState = <T>(initialState: T) => {
 
   const save = () => {
     if (lastState === state) return;
-    console.log("save");
+
     setHistory([...history, lastState]);
     setLastState(state);
     setFuture([]);
@@ -22,7 +22,6 @@ export const useHistoryState = <T>(initialState: T) => {
     }
     if (updatedHistory.length === 0) return;
 
-    console.log("undo");
     const current = updatedHistory[updatedHistory.length - 1];
 
     setFuture([...future, state]);
@@ -32,7 +31,6 @@ export const useHistoryState = <T>(initialState: T) => {
   };
 
   const redo = () => {
-    console.log("redo");
     if (future.length === 0) return;
     const current = future[future.length - 1];
 

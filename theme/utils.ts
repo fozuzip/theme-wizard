@@ -273,60 +273,6 @@ export function createColor(varName: string, colorHsl: Hsl) {
   };
 }
 
-export function randomColor() {
-  return {
-    h: Math.random() * 360,
-    s: Math.random() * 100,
-    l: Math.random() * 100,
-  };
-}
-
-export function generateComplementaryColors(numColors: number) {
-  const colors = [];
-  const baseHue = Math.floor(Math.random() * 360); // Random starting hue between 0 and 360
-
-  for (let i = 0; i < numColors; i++) {
-    // Calculate complementary hue by adding 180 degrees
-    const hue = (baseHue + i * (360 / numColors)) % 360;
-    const saturation = 50; // You can adjust this value as needed (0-100%)
-    const lightness = 50; // You can adjust this value as needed (0-100%)
-
-    colors.push({ h: hue, s: saturation, l: lightness });
-  }
-
-  return colors;
-}
-
-export function generateMonochromaticColors(numColors: number) {
-  const colors = [];
-  const baseHue = Math.floor(Math.random() * 360); // Random starting hue between 0 and 360
-
-  for (let i = 0; i < numColors; i++) {
-    const lightness = (i / (numColors - 1)) * 100; // Vary lightness from 0% to 100%
-    const saturation = 50; // You can adjust this value as needed (0-100%)
-
-    colors.push({ h: baseHue, s: saturation, l: lightness });
-  }
-
-  return colors;
-}
-
-export function generateAnalogousColors(numColors: number) {
-  const colors = [];
-  const baseHue = Math.floor(Math.random() * 360); // Random starting hue between 0 and 360
-  const separationAngle = 30; // Separation angle between analogous colors in degrees
-
-  for (let i = 0; i < numColors; i++) {
-    const hue = (baseHue + i * separationAngle) % 360; // Vary the hue
-    const saturation = 50; // You can adjust this value as needed (0-100%)
-    const lightness = 50; // You can adjust this value as needed (0-100%)
-
-    colors.push({ h: hue, s: saturation, l: lightness });
-  }
-
-  return colors;
-}
-
 export function parseColors(colors: Color[]) {
   const formattedColors = colors.map((colorObj) => {
     const { varName, colorHsl } = colorObj;

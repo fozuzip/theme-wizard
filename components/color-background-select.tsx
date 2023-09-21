@@ -29,7 +29,6 @@ export const ColorBackgroundSelect = ({
   const [open, setOpen] = useState(false);
   const { getColor, setColor, save, setUniqueLock } = useColors();
 
-  console.log(varName);
   let themeColor = getColor(varName);
   if (!themeColor) return children;
 

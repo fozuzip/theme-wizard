@@ -1,11 +1,11 @@
 import { HslColorPicker } from "react-colorful";
 
-import type { Hsl } from "@/theme/useColor";
 import { Input } from "./ui/input";
 import { ChangeEvent, useEffect, useState } from "react";
 import chroma from "chroma-js";
 import { Dice5, Lock, Unlock } from "lucide-react";
 import { Button } from "./ui/button";
+import { Hsl } from "@/theme/utils";
 
 interface ColorPickerProps {
   valueHsl: Hsl;
