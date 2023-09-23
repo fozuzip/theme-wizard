@@ -12,11 +12,10 @@ import {
   hslToHex,
 } from "./utils";
 import { randomizeColors } from "./randomize";
-import chroma from "chroma-js";
 
 // TODO: Reset
 //const randomIndex = Math.floor(Math.random() * themes.length);
-const randomIndex = 1;
+const randomIndex = 0;
 
 const initialColorsLight = parseCSSVariables(themes[randomIndex].light);
 const initialColorsDark = parseCSSVariables(themes[randomIndex].dark);

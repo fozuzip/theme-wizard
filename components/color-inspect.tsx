@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { ColorButton } from "./color-button";
 import {
   DropdownMenu,
@@ -37,13 +36,9 @@ export const ColorInspect = ({
     .map(getColor)
     .filter((color) => color !== undefined) as Color[];
 
-  // Check Width to deside if we should render the dropdown inwards or outwards
-  const [width, setWidth] = useState(0);
-  const elementRef = useRef(null);
-  useEffect(() => {
-    setWidth(elementRef.current?.offsetWidth);
-  }, []);
-  const renderInwards = window.innerWidth - width < 200 ? true : false;
+  // Prevents a lot of weird hydration errors ...
+  // Inspect further , and try to get the latest next version
+  window.innerWidth;
 
   const Element = as || "span";
 
@@ -57,18 +52,15 @@ export const ColorInspect = ({
       }}
     >
       <DropdownMenuTrigger asChild>
-        <Element
-          ref={elementRef}
-          className="cursor-pointer select-none data-[state=open]:ring data-[state=open]:ring-offset-4 data-[state=open]:ring-offset-background data-[state=open]:ring-primary data-[state=open]:rounded-sm "
-        >
+        <Element className="cursor-pointer select-none data-[state=open]:ring data-[state=open]:ring-offset-4 data-[state=open]:ring-offset-background data-[state=open]:ring-primary data-[state=open]:rounded-sm ">
           {children}
         </Element>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        side={renderInwards ? "right" : side}
+        side={side}
         align="start"
-        sideOffset={renderInwards ? -240 : 12}
-        alignOffset={renderInwards ? 12 : -8}
+        sideOffset={12}
+        alignOffset={-8}
       >
         <DropdownMenuLabel>
           <Accordion type="single" collapsible defaultValue="item-0">

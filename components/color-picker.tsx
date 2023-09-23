@@ -6,6 +6,7 @@ import chroma from "chroma-js";
 import { Dice5, Lock, Unlock } from "lucide-react";
 import { Button } from "./ui/button";
 import { Hsl } from "@/theme/utils";
+import EyeDropperButton from "./eye-dropper-button";
 
 interface ColorPickerProps {
   valueHsl: Hsl;
@@ -64,9 +65,7 @@ export const ColorPicker = ({
           copyToClipboard
         />
 
-        <Button variant="ghost" size="icon" disabled={isLocked}>
-          <Dice5 className="w-4 h-4" />
-        </Button>
+        <EyeDropperButton onColorSelect={onChange} disabled={isLocked} />
         <Button
           variant="ghost"
           size="icon"
