@@ -1,12 +1,12 @@
 import { HeroSection } from "./components/hero-section";
-import { Examples } from "./components/examples";
+import { HowDoesItWork } from "./components/how-does-it-work";
 
 export default function Home() {
   return (
     <>
       <HeroSection />
-      <div className="pt-32">
-        <Examples />
+      <div className="pt-[200px]">
+        <HowDoesItWork />
       </div>
     </>
   );

@@ -6,7 +6,7 @@ export default function useIsScrolled() {
 
   // Handler when page is scrolled
   const handleScroll = () => {
-    if (window.scrollY > 200) {
+    if (window.scrollY > (isScrolled ? 250 : 200)) {
       setScrolled(true);
     } else {
       setScrolled(false);
