@@ -23,9 +23,11 @@ const initialColorsDark = parseCSSVariables(themes[randomIndex].dark);
 type ColorsContextType = {
   mode: "light" | "dark";
   colors: Color[];
+  borderRadius: string;
   otherModeColors: Color[];
   uniqueColors: (Color & { varNames: string[] })[];
   setColor: (varName: string, color: Hsl | string) => void;
+  setBorderRadius: (borderRadius: string) => void;
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => void;
   getColor: (varName: string) => Color | undefined;
   undo: () => void;
@@ -43,9 +45,11 @@ type ColorsContextType = {
 const ColorsContext = createContext<ColorsContextType>({
   mode: "dark",
   colors: initialColorsDark,
+  borderRadius: "0.5rem",
   otherModeColors: initialColorsLight,
   uniqueColors: [],
   setColor: (varName: string, color: Hsl | string) => {},
+  setBorderRadius: (borderRadius: string) => {},
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => {},
   getColor: () => undefined,
   undo: () => {},
@@ -83,22 +87,29 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     [mode, darkColors, lightColors]
   );
 
+  const [borderRadius, setBorderRadius] = useState("0.5rem");
+
   const toggleMode = () => {
     setMode((m) => (m === "dark" ? "light" : "dark"));
   };
 
-  const updateCssVariable = (color: Color) => {
-    document.documentElement.style.setProperty(
-      color.varName,
-      hslToCssString(color.colorHsl)
-    );
+  const updateCssVariable = (varName: string, value: string) => {
+    document.documentElement.style.setProperty(varName, value);
+  };
+
+  const updateCssColorVariable = (color: Color) => {
+    updateCssVariable(color.varName, hslToCssString(color.colorHsl));
   };
 
   useEffect(() => {
     for (const color of colors) {
-      updateCssVariable(color);
+      updateCssColorVariable(color);
     }
   }, [colors]);
+
+  useEffect(() => {
+    updateCssVariable("--radius", borderRadius);
+  }, [borderRadius]);
 
   const setColor = (varName: string, color: Hsl | string) => {
     const newColors = colors.map((c) => {
@@ -259,9 +270,11 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         mode,
         colors,
+        borderRadius,
         otherModeColors,
         uniqueColors,
         setColor,
+        setBorderRadius,
         setUniqueColor,
         getColor,
         undo,

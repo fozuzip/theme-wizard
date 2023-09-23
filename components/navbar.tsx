@@ -28,9 +28,12 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { ModeToggle } from "./mode-toggle";
+import { BorderRadiusSelect } from "./border-radius-select";
 
 export const Navbar = () => {
   const {
+    borderRadius,
+    setBorderRadius,
     uniqueColors,
     setUniqueColor,
     undo,
@@ -155,6 +158,10 @@ export const Navbar = () => {
                   <Dice5 size={20} />
                 </Button>
                 <ModeToggle />
+                <BorderRadiusSelect
+                  value={borderRadius}
+                  onChange={setBorderRadius}
+                />
                 <Button
                   size="icon"
                   variant="ghost"
