@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  ArrowRight,
-  Dice5,
-  MoonStar,
-  Redo,
-  Undo,
-  Unlock,
-  Lock,
-} from "lucide-react";
+import { ArrowRight, Dice5, Redo, Undo, Unlock, Lock } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { Logo } from "@/components/logo";
@@ -81,7 +73,7 @@ export const Navbar = () => {
   );
 
   useHotkeys(
-    "rr",
+    "r",
     () => {
       randomize();
     },

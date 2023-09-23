@@ -10,11 +10,13 @@ import {
   hexToHsl,
   hslToCssString,
   hslToHex,
-  createColor,
 } from "./utils";
-import { paletteCreator } from "./palette";
+import { randomizeColors } from "./randomize";
+import chroma from "chroma-js";
 
-const randomIndex = Math.floor(Math.random() * themes.length);
+// TODO: Reset
+//const randomIndex = Math.floor(Math.random() * themes.length);
+const randomIndex = 1;
 
 const initialColorsLight = parseCSSVariables(themes[randomIndex].light);
 const initialColorsDark = parseCSSVariables(themes[randomIndex].dark);
@@ -243,95 +245,14 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const randomize = () => {
-    const palette = paletteCreator().scheme("triadicr");
+    const newLightColors = randomizeColors(lightColors.state, "light");
+    const newDarkColors = randomizeColors(darkColors.state, "dark");
 
-    const background = createColor("--background", palette.l(0, 10).generate());
-    const foreground = createColor(
-      "--foreground",
-      palette.l(90, 100).contrast(background.colorHsl).generate()
-    );
+    lightColors.set(newLightColors);
+    lightColors.save();
 
-    const card = createColor("--card", background.colorHsl);
-    const cardForeground = createColor(
-      "--card-foreground",
-      foreground.colorHsl
-    );
-
-    const popover = createColor("--popover", background.colorHsl);
-    const popoverForeground = createColor(
-      "--popover-foreground",
-      foreground.colorHsl
-    );
-
-    const primary = createColor("--primary", palette.l(20, 80).generate());
-    const primaryForeground = createColor(
-      "--primary-foreground",
-      palette.contrast(primary.colorHsl).generate()
-    );
-
-    const muted = createColor("--muted", palette.l(10, 20).s(0, 60).generate());
-    const mutedForeground = createColor(
-      "--muted-foreground",
-      palette.l(80, 90).contrast(muted.colorHsl).generate()
-    );
-
-    const secondary = createColor("--secondary", muted.colorHsl);
-    const secondaryForeground = createColor(
-      "--secondary-foreground",
-      foreground.colorHsl
-    );
-
-    const accent = createColor("--accent", muted.colorHsl);
-    const accentForeground = createColor(
-      "--accent-foreground",
-      foreground.colorHsl
-    );
-
-    const destructive = createColor(
-      "--destructive",
-      palette.l(20, 80).generate()
-    );
-    const destructiveForeground = createColor(
-      "--destructive-foreground",
-      foreground.colorHsl
-    );
-
-    const border = createColor("--border", muted.colorHsl);
-    const input = createColor("--input", muted.colorHsl);
-
-    const ring = createColor("--ring", palette.l(20, 80).generate());
-
-    const newTheme = [
-      background,
-      foreground,
-      card,
-      cardForeground,
-      popover,
-      popoverForeground,
-      primary,
-      primaryForeground,
-      secondary,
-      secondaryForeground,
-      muted,
-      mutedForeground,
-      accent,
-      accentForeground,
-      destructive,
-      destructiveForeground,
-      border,
-      input,
-      ring,
-    ];
-
-    const newColors = colors.map((color) => {
-      if (color.locked) return color;
-
-      const newColor = newTheme.find((c) => c.varName === color.varName);
-      return newColor ?? color;
-    });
-
-    setColors(newColors);
-    save();
+    darkColors.set(newDarkColors);
+    darkColors.save();
   };
 
   return (

@@ -3,7 +3,7 @@
 import { ColorPicker } from "@/components/color-picker";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Scheme, paletteCreator } from "@/theme/palette";
+import { Scheme, paletteCreator } from "@/theme/randomize";
 import { hslToHex } from "@/theme/utils";
 
 import { RotateCcw } from "lucide-react";
