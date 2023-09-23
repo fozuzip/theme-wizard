@@ -8,9 +8,19 @@ export type Scheme =
   | "triadic"
   | "compound";
 
+const schemes = [
+  "compound",
+  "analogous",
+  "complementary",
+  "triadic",
+  "compound",
+  "monochromatic",
+] as Scheme[];
+
 export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
   // Get Scheme :
-  const scheme = "compound" as Scheme;
+  const scheme = schemes[Math.floor(Math.random() * schemes.length)];
+  console.log(scheme);
   const jitterAmount = 10;
 
   // Get base Hue :
@@ -28,7 +38,6 @@ export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
       (c) => c.varName !== "--destructive"
     );
   }
-  if (colorWithPruimaryHue) console.log("Found Primary");
 
   primaryHue = colorWithPruimaryHue?.colorHsl.h ?? Math.random() * 360;
 
@@ -149,7 +158,7 @@ export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
         tries < 100 &&
         chroma.contrast(hslToHex(vColor), hslToHex(fColor)) < 4.5
       );
-      if (tries >= 100) console.log("Failed to find contrast");
+      if (tries >= 100) console.warn("Failed to find contrast");
 
       newColors.push(createColor(v, vColor));
       newColors.push(createColor(f, fColor));
@@ -308,7 +317,7 @@ export const generateColor = (
   h = h % 360;
   let s = randomFromRange(constraints.sRange.min, constraints.sRange.max);
   let l = randomFromRange(constraints.lRange.min, constraints.lRange.max);
-  console.log(l, constraints.lRange);
+
   return {
     h: Math.round(h * 10) / 10,
     s: Math.round(s * 10) / 10,

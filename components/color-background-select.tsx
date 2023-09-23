@@ -58,7 +58,6 @@ export const ColorBackgroundSelect = ({
             <ColorButton
               hex={themeColor.colorHex}
               isLocked={themeColor.locked}
-              onClick={() => console.log("click")}
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent
