@@ -29,6 +29,7 @@ import {
 } from "./ui/dialog";
 import { ModeToggle } from "./mode-toggle";
 import { BorderRadiusSelect } from "./border-radius-select";
+import { FontsPopover } from "./fonts-popover";
 
 export const Navbar = () => {
   const {
@@ -104,8 +105,8 @@ export const Navbar = () => {
               <Logo />
               <h1 className="font-bold text-2xl">theme wizard</h1>
             </a>
-            <div className="ml-auto flex items-center space-x-6">
-              <div className="flex items-center space-x-6">
+            <div className="ml-auto flex items-center">
+              <div className="flex items-center space-x-6 pr-6">
                 {uniqueColors.map(
                   ({ varName, colorHex, colorHsl, locked, varNames }) => (
                     <Popover
@@ -142,6 +143,9 @@ export const Navbar = () => {
                     </Popover>
                   )
                 )}
+              </div>
+
+              <div className="flex items-center space-x-2 pr-3">
                 <Button variant="ghost" size="icon">
                   <LockIcon
                     className="w-4 h-4"
@@ -151,17 +155,14 @@ export const Navbar = () => {
                     }}
                   />
                 </Button>
-              </div>
-              <Separator orientation="vertical" className="h-6" />
-              <div className="flex items-center space-x-2">
                 <Button size="icon" variant="ghost" onClick={randomize}>
                   <Dice5 size={20} />
                 </Button>
                 <ModeToggle />
-                <BorderRadiusSelect
-                  value={borderRadius}
-                  onChange={setBorderRadius}
-                />
+                <Separator orientation="vertical" className="h-6" />
+                <FontsPopover />
+                <BorderRadiusSelect />
+
                 <Button
                   size="icon"
                   variant="ghost"

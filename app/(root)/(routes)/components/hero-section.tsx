@@ -21,7 +21,7 @@ export const HeroSection = () => {
             </ColorInspect>
           </div>
 
-          <h1 className="col-start-1 row-start-2 mt-4 max-w-[36rem] text-4xl font-extrabold tracking-tight text-foreground sm:text-7xl xl:max-w-[43.5rem]">
+          <h1 className="col-start-1 row-start-2 mt-4 max-w-[36rem] text-4xl font-extrabold tracking-tight text-foreground sm:text-7xl xl:max-w-[43.5rem] apply-font-heading">
             <ColorInspect varNames={["--foreground"]}>Watch your </ColorInspect>{" "}
             <span className="bg-gradient-to-r from-primary to-destructive bg-clip-text text-transparent ">
               <ColorInspect varNames={["--primary", "--destructive"]}>

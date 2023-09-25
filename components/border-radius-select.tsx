@@ -1,3 +1,6 @@
+"use cleint";
+
+import useColors from "@/theme/useColor";
 import {
   Select,
   SelectGroup,
@@ -8,18 +11,15 @@ import {
   SelectValue,
 } from "./ui/select";
 
-interface BorderRadiusSelectProps {
-  value: string;
-  onChange: (value: string) => void;
-}
+export const BorderRadiusSelect = () => {
+  const { borderRadius, setBorderRadius } = useColors();
 
-export const BorderRadiusSelect = ({
-  value,
-  onChange,
-}: BorderRadiusSelectProps) => {
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="border-0 w-[100px] hover:bg-accent hover:text-accent-foreground">
+    <Select value={borderRadius} onValueChange={setBorderRadius}>
+      <SelectTrigger
+        className="border-0 w-[80px] hover:bg-accent hover:text-accent-foreground"
+        showChevron={false}
+      >
         <div className="w-5 h-5 border-white border rounded-md" />
         <SelectValue />
       </SelectTrigger>

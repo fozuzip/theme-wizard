@@ -23,10 +23,14 @@ const initialColorsDark = parseCSSVariables(themes[randomIndex].dark);
 type ColorsContextType = {
   mode: "light" | "dark";
   colors: Color[];
+  bodyFont: string;
+  headingFont: string;
   borderRadius: string;
   otherModeColors: Color[];
   uniqueColors: (Color & { varNames: string[] })[];
   setColor: (varName: string, color: Hsl | string) => void;
+  setBodyFont: (font: string) => void;
+  setHeadingFont: (font: string) => void;
   setBorderRadius: (borderRadius: string) => void;
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => void;
   getColor: (varName: string) => Color | undefined;
@@ -44,11 +48,15 @@ type ColorsContextType = {
 
 const ColorsContext = createContext<ColorsContextType>({
   mode: "dark",
+  bodyFont: "inter",
+  headingFont: "inter",
   colors: initialColorsDark,
   borderRadius: "0.5rem",
   otherModeColors: initialColorsLight,
   uniqueColors: [],
   setColor: (varName: string, color: Hsl | string) => {},
+  setBodyFont: (font: string) => {},
+  setHeadingFont: (font: string) => {},
   setBorderRadius: (borderRadius: string) => {},
   setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => {},
   getColor: () => undefined,
@@ -67,27 +75,49 @@ const ColorsContext = createContext<ColorsContextType>({
 export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<"light" | "dark">("dark");
 
-  const darkColors = useHistoryState(initialColorsDark);
-  const lightColors = useHistoryState(initialColorsLight);
+  const { state, set, undo, canUndo, redo, canRedo, save } = useHistoryState({
+    darkColors: initialColorsDark,
+    lightColors: initialColorsLight,
+    bodyFont: "inter",
+    headingFont: "inter",
+    borderRadius: "0.5rem",
+  });
 
-  const {
-    state: colors,
-    set: setColors,
-    undo,
-    canUndo,
-    redo,
-    canRedo,
-    save,
-  } = useMemo(
-    () => (mode === "dark" ? darkColors : lightColors),
-    [mode, darkColors, lightColors]
+  const colors = useMemo(
+    () => (mode === "dark" ? state.darkColors : state.lightColors),
+    [mode, state.darkColors, state.lightColors]
   );
+
   const otherModeColors = useMemo(
-    () => (mode === "dark" ? lightColors.state : darkColors.state),
-    [mode, darkColors, lightColors]
+    () => (mode === "dark" ? state.lightColors : state.darkColors),
+    [mode, state.darkColors, state.lightColors]
   );
 
-  const [borderRadius, setBorderRadius] = useState("0.5rem");
+  const setColors = (colors: Color[]) => {
+    if (mode === "dark") {
+      set({ ...state, darkColors: colors });
+    } else {
+      set({ ...state, lightColors: colors });
+    }
+  };
+
+  const bodyFont = state.bodyFont;
+  const setBodyFont = (font: string) => {
+    set({ ...state, bodyFont: font });
+    save();
+  };
+
+  const headingFont = state.headingFont;
+  const setHeadingFont = (font: string) => {
+    set({ ...state, headingFont: font });
+    save();
+  };
+
+  const borderRadius = state.borderRadius;
+  const setBorderRadius = (borderRadius: string) => {
+    set({ ...state, borderRadius: borderRadius });
+    save();
+  };
 
   const toggleMode = () => {
     setMode((m) => (m === "dark" ? "light" : "dark"));
@@ -255,14 +285,11 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const randomize = () => {
-    const newLightColors = randomizeColors(lightColors.state, "light");
-    const newDarkColors = randomizeColors(darkColors.state, "dark");
+    const newLightColors = randomizeColors(state.lightColors, "light");
+    const newDarkColors = randomizeColors(state.darkColors, "dark");
 
-    lightColors.set(newLightColors);
-    lightColors.save();
-
-    darkColors.set(newDarkColors);
-    darkColors.save();
+    set({ ...state, lightColors: newLightColors, darkColors: newDarkColors });
+    save();
   };
 
   return (
@@ -270,10 +297,14 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         mode,
         colors,
+        bodyFont,
+        headingFont,
         borderRadius,
         otherModeColors,
         uniqueColors,
         setColor,
+        setBodyFont,
+        setHeadingFont,
         setBorderRadius,
         setUniqueColor,
         getColor,
