@@ -10,9 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { cn } from "@/lib/utils";
 
 export const BorderRadiusSelect = () => {
-  const { borderRadius, setBorderRadius } = useColors();
+  const { borderRadius, setBorderRadius, mode } = useColors();
 
   return (
     <Select value={borderRadius} onValueChange={setBorderRadius}>
@@ -20,7 +21,12 @@ export const BorderRadiusSelect = () => {
         className="border-0 w-[80px] hover:bg-accent hover:text-accent-foreground"
         showChevron={false}
       >
-        <div className="w-5 h-5 border-white border rounded-md" />
+        <div
+          className={cn(
+            "w-5 h-5 border rounded-md ",
+            mode === "light" ? "border-black" : "border-white"
+          )}
+        />
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

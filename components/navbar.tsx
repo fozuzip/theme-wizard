@@ -6,7 +6,6 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import useIsScrolled from "@/hooks/useIsScrolled";
 import { cn } from "@/lib/utils";
 import {
   Popover,
@@ -49,8 +48,6 @@ export const Navbar = () => {
 
   const [colorLock, setColorLock] = useState(false);
 
-  const isScrolled = useIsScrolled();
-
   // TODO : Multiple hotkeys ?
   useHotkeys(
     "ctrl+z",
@@ -87,20 +84,10 @@ export const Navbar = () => {
   const LockIcon = colorLock ? Lock : Unlock;
 
   return (
-    <Dialog>
-      <header
-        className={cn(
-          "sticky top-0  z-50 w-full flex-none text-sm font-semibold leading-6 bg-background",
-          isScrolled && "border-b"
-        )}
-      >
+    <header className="fixed top-0 z-[100] w-full flex-none text-sm font-semibold leading-6 bg-background border-b">
+      <Dialog>
         <nav className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
-          <div
-            className={cn(
-              "relative flex items-center py-[2.125rem] transition-all",
-              isScrolled && "py-[1rem]"
-            )}
-          >
+          <div className="relative flex items-center py-[1rem] transition-all">
             <a className="flex gap-3 items-center cursor-pointer">
               <Logo />
               <h1 className="font-bold text-2xl">theme wizard</h1>
@@ -191,16 +178,16 @@ export const Navbar = () => {
             </div>
           </div>
         </nav>
-      </header>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Theme</DialogTitle>
-          <DialogDescription>
-            Copy and paste the following code into your globals.css file.
-          </DialogDescription>
-        </DialogHeader>
-        <ExportCode />
-      </DialogContent>
-    </Dialog>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Theme</DialogTitle>
+            <DialogDescription>
+              Copy and paste the following code into your globals.css file.
+            </DialogDescription>
+          </DialogHeader>
+          <ExportCode />
+        </DialogContent>
+      </Dialog>
+    </header>
   );
 };
