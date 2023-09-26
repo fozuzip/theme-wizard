@@ -12,32 +12,30 @@ import { DemoTeamMembers } from "./cards/team-members";
 export const Cards = () => {
   return (
     <div className="items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-3 z-10">
-      <ColorInspect varNames={["--card"]}>
-        <div className="col-span-2 grid items-start gap-6 lg:col-span-1 z-20">
-          <DemoContainer>
-            <DemoCreateAccount />
-          </DemoContainer>
-          <DemoContainer>
-            <DemoPaymentMethod />
-          </DemoContainer>
-        </div>
-      </ColorInspect>
-      <ColorInspect varNames={["--card"]}>
-        <div className="col-span-2 grid items-start gap-6 lg:col-span-1">
-          <DemoContainer>
-            <DemoTeamMembers />
-          </DemoContainer>
-          <DemoContainer>
-            <DemoShareDocument />
-          </DemoContainer>
-          <DemoContainer>
-            <DemoDatePicker />
-          </DemoContainer>
-          <DemoContainer>
-            <DemoNotifications />
-          </DemoContainer>
-        </div>
-      </ColorInspect>
+      <div className="col-span-2 grid items-start gap-6 lg:col-span-1 z-20">
+        <DemoContainer>
+          <DemoCreateAccount />
+        </DemoContainer>
+        <DemoContainer>
+          <DemoPaymentMethod />
+        </DemoContainer>
+      </div>
+
+      <div className="col-span-2 grid items-start gap-6 lg:col-span-1">
+        <DemoContainer>
+          <DemoTeamMembers />
+        </DemoContainer>
+        <DemoContainer>
+          <DemoShareDocument />
+        </DemoContainer>
+        <DemoContainer>
+          <DemoDatePicker />
+        </DemoContainer>
+        <DemoContainer>
+          <DemoNotifications />
+        </DemoContainer>
+      </div>
+
       <div className="col-span-2 grid items-start gap-6 lg:col-span-2 lg:grid-cols-2 xl:col-span-1 xl:grid-cols-1">
         <DemoContainer>
           <DemoReportAnIssue />

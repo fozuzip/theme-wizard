@@ -20,7 +20,6 @@ const schemes = [
 export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
   // Get Scheme :
   const scheme = schemes[Math.floor(Math.random() * schemes.length)];
-  console.log(scheme);
   const jitterAmount = 10;
 
   // Get base Hue :

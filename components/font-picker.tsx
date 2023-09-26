@@ -170,7 +170,6 @@ export default class FontPicker extends PureComponent<Props, State> {
    * Update the active font on font button click
    */
   onSelection = (newActive: string): void => {
-    console.log(newActive);
     const activeFontFamily = newActive;
     if (!activeFontFamily) {
       throw Error(`Missing font family in clicked font button`);
@@ -203,11 +202,11 @@ export default class FontPicker extends PureComponent<Props, State> {
     }
     return (
       <SelectContent className="font-list max-h-[400px] overflow-auto">
-        {fonts.map((font): ReactElement => {
+        {fonts.map((font, i): ReactElement => {
           const fontId = getFontId(font.family);
           return (
             <SelectItem
-              key={fontId}
+              key={fontId + i}
               value={font.family}
               className="font-list-item"
               id={`font-button-${fontId}${this.fontManager.selectorSuffix}`}

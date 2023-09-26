@@ -1,3 +1,5 @@
+"use client";
+
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -6,6 +8,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ColorsProvider } from "@/theme/useColor";
 import { Navbar } from "@/components/navbar";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { ClickDetector, Selection } from "@/components/click-detector";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,18 +23,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [selection, setSelection] = useState<Selection | null>(null);
+
   return (
     <ColorsProvider>
       <html lang="en">
         <body className={cn(inter.className, "apply-font-body")}>
           <TooltipProvider>
-            <Navbar />
+            <Navbar selection={selection} />
+            <ClickDetector onSelection={setSelection} selection={selection}>
+              <div
+                className=" relative -mt-[5.75rem] overflow-hidden pb-16 pt-[5.75rem]"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
 
-            <div className=" relative -mt-[5.75rem] overflow-hidden pb-16 pt-[5.75rem]">
-              <div className="relative mx-auto mt-16 w-full max-w-[85rem] px-4 sm:mt-20 sm:px-6 lg:px-8 xl:mt-32 apply-font-body">
-                {children}
+                  console.log("click");
+                }}
+              >
+                <div className="relative mx-auto mt-16 w-full max-w-[85rem] px-4 sm:mt-20 sm:px-6 lg:px-8 xl:mt-32 apply-font-body">
+                  {children}
+                </div>
               </div>
-            </div>
+            </ClickDetector>
           </TooltipProvider>
         </body>
       </html>

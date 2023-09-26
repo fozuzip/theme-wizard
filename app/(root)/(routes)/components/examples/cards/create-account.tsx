@@ -46,7 +46,12 @@ export function DemoCreateAccount() {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" />
+          <Input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            className="ring-ring ring-offset-2 ring-2"
+          />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
@@ -54,9 +59,7 @@ export function DemoCreateAccount() {
         </div>
       </CardContent>
       <CardFooter>
-        <ColorInspect varNames={["--primary"]}>
-          <Button className="w-full">Create account</Button>
-        </ColorInspect>
+        <Button className="w-full">Create account</Button>
       </CardFooter>
     </Card>
   );

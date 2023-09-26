@@ -78,7 +78,7 @@ export function DemoReportAnIssue() {
       </CardContent>
       <CardFooter className="justify-between space-x-2">
         <Button variant="ghost">Cancel</Button>
-        <Button>Submit</Button>
+        <Button variant="destructive">Submit</Button>
       </CardFooter>
     </Card>
   );

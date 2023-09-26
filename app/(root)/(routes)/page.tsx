@@ -1,4 +1,5 @@
 "use client";
+
 import { HeroSection } from "./components/hero-section";
 import { Examples } from "./components/examples";
 import { useEffect } from "react";
@@ -19,9 +20,11 @@ export default function Home() {
 
   return (
     <>
-      <HeroSection />
-      <div className="pt-32">
-        <Examples />
+      <div className="bg-background text-foreground ">
+        <HeroSection />
+        <div className="pt-32">
+          <Examples />
+        </div>
       </div>
     </>
   );

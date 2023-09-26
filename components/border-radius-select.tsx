@@ -29,7 +29,7 @@ export const BorderRadiusSelect = () => {
         />
         <SelectValue />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="z-[101]">
         <SelectGroup>
           <SelectLabel className="px-2">Border Radius</SelectLabel>
           <SelectItem value="0rem">0</SelectItem>

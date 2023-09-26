@@ -6,7 +6,6 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,
@@ -29,11 +28,17 @@ import {
 import { ModeToggle } from "./mode-toggle";
 import { BorderRadiusSelect } from "./border-radius-select";
 import { FontsPopover } from "./fonts-popover";
+import { Selection } from "./click-detector";
+import { Badge } from "./ui/badge";
+import { Hsl } from "@/theme/utils";
+import { set } from "date-fns";
 
-export const Navbar = () => {
+interface NavbarProps {
+  selection: Selection | null;
+}
+
+export const Navbar = ({ selection }: NavbarProps) => {
   const {
-    borderRadius,
-    setBorderRadius,
     uniqueColors,
     setUniqueColor,
     undo,
@@ -47,6 +52,26 @@ export const Navbar = () => {
   } = useColors();
 
   const [colorLock, setColorLock] = useState(false);
+
+  const selectionVarNames = selection
+    ? selection.colors.map((color) => `--${color}`)
+    : [];
+
+  const colors = selection
+    ? uniqueColors
+        .filter(
+          (colors) =>
+            !!colors.varNames.find((varName) =>
+              selectionVarNames.includes(varName)
+            )
+        )
+        .map((color) => ({
+          ...color,
+          varNames: color.varNames.filter((varName) =>
+            selectionVarNames.includes(varName)
+          ),
+        }))
+    : uniqueColors;
 
   // TODO : Multiple hotkeys ?
   useHotkeys(
@@ -94,7 +119,15 @@ export const Navbar = () => {
             </a>
             <div className="ml-auto flex items-center">
               <div className="flex items-center space-x-6 pr-6">
-                {uniqueColors.map(
+                {selection?.elementTag && (
+                  <Badge>
+                    <span className="capitalize pr-1">
+                      {selection?.elementTag}{" "}
+                    </span>
+                    selected
+                  </Badge>
+                )}
+                {colors.map(
                   ({ varName, colorHex, colorHsl, locked, varNames }) => (
                     <Popover
                       key={varName}
@@ -105,18 +138,12 @@ export const Navbar = () => {
                       }}
                     >
                       <PopoverTrigger>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <ColorButton hex={colorHex} isLocked={locked} />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {varNames.map((varName) => (
-                              <p key={varName}>{varName}</p>
-                            ))}
-                          </TooltipContent>
-                        </Tooltip>
+                        <ColorButton hex={colorHex} isLocked={locked} />
                       </PopoverTrigger>
-                      <PopoverContent sideOffset={14} className="w-59 p-3">
+                      <PopoverContent
+                        sideOffset={14}
+                        className="w-59 p-3 z-[101]"
+                      >
                         <ColorPicker
                           valueHsl={colorHsl}
                           valueHex={colorHex}
@@ -147,8 +174,20 @@ export const Navbar = () => {
                 </Button>
                 <ModeToggle />
                 <Separator orientation="vertical" className="h-6" />
-                <FontsPopover />
-                <BorderRadiusSelect />
+                {selection ? (
+                  selection.hasBodyText || selection.hasHeading ? (
+                    <FontsPopover selection={selection} />
+                  ) : null
+                ) : (
+                  <FontsPopover selection={selection} />
+                )}
+                {selection ? (
+                  selection.hasBorder ? (
+                    <BorderRadiusSelect />
+                  ) : null
+                ) : (
+                  <BorderRadiusSelect />
+                )}
 
                 <Button
                   size="icon"

@@ -19,7 +19,7 @@ export const useFont = (fontId?: string) => {
 
   useEffect(() => {
     // Generate font list
-    console.log(fontManager);
+
     fontManager
       .init()
       .then((): void => {

@@ -32,7 +32,11 @@ type ColorsContextType = {
   setBodyFont: (font: string) => void;
   setHeadingFont: (font: string) => void;
   setBorderRadius: (borderRadius: string) => void;
-  setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => void;
+  setUniqueColor: (
+    colorHsl: Hsl,
+    newColor: Hsl | string,
+    varNames?: string[]
+  ) => void;
   getColor: (varName: string) => Color | undefined;
   undo: () => void;
   canUndo: boolean;
@@ -198,12 +202,12 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setUniqueColor = (colorHsl: Hsl, newColor: Hsl | string) => {
     const newColors = colors.map((c) => {
-      if (
+      const isSameColor =
         c.colorHsl.h === colorHsl.h &&
         c.colorHsl.s === colorHsl.s &&
-        c.colorHsl.l === colorHsl.l &&
-        !c.locked
-      ) {
+        c.colorHsl.l === colorHsl.l;
+
+      if (isSameColor && !c.locked) {
         const newC = {
           ...c,
         };
@@ -332,3 +336,25 @@ const useColors = () => {
 };
 
 export default useColors;
+
+export const colorNames = [
+  "background",
+  "foreground",
+  "card",
+  "card-foreground",
+  "popover",
+  "popover-foreground",
+  "primary",
+  "primary-foreground",
+  "secondary",
+  "secondary-foreground",
+  "muted",
+  "muted-foreground",
+  "accent",
+  "accent-foreground",
+  "destructive",
+  "destructive-foreground",
+  "border",
+  "input",
+  "ring",
+];
