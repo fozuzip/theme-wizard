@@ -4,14 +4,6 @@ import { colorNames } from "@/theme/useColor";
 import { set } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 
-// TODO: REMOVE
-
-interface ClickDetectorProps {
-  children: React.ReactNode;
-  selection: Selection | null;
-  onSelection: (selection: Selection | null) => void;
-}
-
 export type Selection = {
   elementTag: string;
   colors: string[];
@@ -19,6 +11,12 @@ export type Selection = {
   hasBodyText: boolean;
   hasBorder: boolean;
 };
+
+interface ClickDetectorProps {
+  children: React.ReactNode;
+  selection: Selection | null;
+  onSelection: (selection: Selection | null) => void;
+}
 
 export const ClickDetector = ({
   children,
