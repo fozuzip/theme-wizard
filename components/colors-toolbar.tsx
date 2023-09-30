@@ -2,7 +2,7 @@
 
 import useColors from "@/theme/useColor";
 import { Dice5, Lock, Unlock } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Selection } from "./click-detector";
 import { ColorButton } from "./color-button";
@@ -11,6 +11,10 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Separator } from "./ui/separator";
+import { set } from "date-fns";
+import { Hsl, hexToHsl, hslToHex } from "@/theme/utils";
+import { Tooltip, TooltipContent } from "./ui/tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 interface ColorsToolbarProps {
   selection: Selection | null;
@@ -18,11 +22,11 @@ interface ColorsToolbarProps {
 
 export const ColorsToolbar = ({ selection }: ColorsToolbarProps) => {
   const {
-    uniqueColors,
-    setUniqueColor,
+    colors,
+    setBatchColors,
     save,
-    setUniqueLock,
     setLockAllColors,
+    setBatchLock,
     randomize,
   } = useColors();
 
@@ -32,21 +36,48 @@ export const ColorsToolbar = ({ selection }: ColorsToolbarProps) => {
     ? selection.colors.map((color) => `--${color}`)
     : [];
 
-  const colors = selection
-    ? uniqueColors
-        .filter(
-          (colors) =>
-            !!colors.varNames.find((varName) =>
-              selectionVarNames.includes(varName)
-            )
-        )
-        .map((color) => ({
-          ...color,
-          varNames: color.varNames.filter((varName) =>
-            selectionVarNames.includes(varName)
-          ),
-        }))
-    : uniqueColors;
+  const groupedColors = useMemo(() => {
+    const colorSet = new Set<string>();
+    let groupedColors = [];
+
+    for (const color of colors) {
+      if (selection && !selectionVarNames.includes(color.varName)) continue;
+
+      if (!colorSet.has(color.colorHex)) {
+        colorSet.add(color.colorHex);
+        groupedColors.push({ ...color, varNames: [color.varName] });
+      } else {
+        const existingColor = groupedColors.find(
+          (c) => c.colorHex === color.colorHex
+        );
+        if (existingColor) {
+          existingColor.varNames.push(color.varName);
+        }
+      }
+    }
+
+    return groupedColors;
+  }, [colors, selection]);
+
+  const handleGroupColorChange = (
+    groupVarName: string,
+    newColor: Hsl | string
+  ) => {
+    const group = groupedColors.find(({ varName }) => varName === groupVarName);
+    if (!group) return;
+
+    setBatchColors(
+      group.varNames,
+      typeof newColor === "string" ? hexToHsl(newColor) : newColor
+    );
+  };
+
+  const handleGroupLock = (groupVarName: string, locked: boolean) => {
+    const group = groupedColors.find(({ varName }) => varName === groupVarName);
+    if (!group) return;
+
+    setBatchLock(group.varNames, locked);
+  };
 
   useHotkeys(
     "l",
@@ -65,6 +96,16 @@ export const ColorsToolbar = ({ selection }: ColorsToolbarProps) => {
     []
   );
 
+  useEffect(() => {
+    if (colorLock) {
+      const allUnlocked = groupedColors.every(({ locked }) => !locked);
+      if (allUnlocked) setColorLock(false);
+    } else {
+      const allLocked = groupedColors.every(({ locked }) => locked);
+      if (allLocked) setColorLock(true);
+    }
+  }, [groupedColors, colorLock]);
+
   const LockIcon = colorLock ? Lock : Unlock;
 
   return (
@@ -77,33 +118,55 @@ export const ColorsToolbar = ({ selection }: ColorsToolbarProps) => {
       )}
       <div className="flex items-center">
         <div className="flex items-center space-x-4">
-          {colors.map(({ varName, colorHex, colorHsl, locked, varNames }) => (
-            <Popover
-              key={varName}
-              onOpenChange={(open) => {
-                if (!open) {
-                  save();
-                }
-              }}
-            >
-              <PopoverTrigger>
-                <ColorButton
-                  hex={colorHex}
-                  isLocked={locked}
-                  onLockToggle={(value) => setUniqueLock(colorHsl, value)}
-                />
-              </PopoverTrigger>
-              <PopoverContent sideOffset={14} className="w-59 p-3 z-[101]">
-                <ColorPicker
-                  valueHsl={colorHsl}
-                  valueHex={colorHex}
-                  onChange={(newColor) => setUniqueColor(colorHsl, newColor)}
-                  isLocked={locked}
-                  toggleLock={(value) => setUniqueLock(colorHsl, value)}
-                />
-              </PopoverContent>
-            </Popover>
-          ))}
+          {groupedColors.map(
+            ({ varName, colorHex, colorHsl, locked, varNames }) => (
+              <Tooltip key={varName}>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Popover
+                      onOpenChange={(open) => {
+                        if (!open) {
+                          save();
+                        }
+                      }}
+                    >
+                      <PopoverTrigger>
+                        <ColorButton
+                          hex={colorHex}
+                          isLocked={locked}
+                          onLockToggle={(value) =>
+                            handleGroupLock(varName, value)
+                          }
+                        />
+                      </PopoverTrigger>
+                      <PopoverContent
+                        sideOffset={14}
+                        className="w-59 p-3 z-[101]"
+                      >
+                        <ColorPicker
+                          varName={varName}
+                          valueHsl={colorHsl}
+                          valueHex={colorHex}
+                          onChange={(newColor) =>
+                            handleGroupColorChange(varName, newColor)
+                          }
+                          isLocked={locked}
+                          toggleLock={(value) =>
+                            handleGroupLock(varName, value)
+                          }
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {varNames.map((varName) => (
+                    <p key={varName}>{varName}</p>
+                  ))}
+                </TooltipContent>
+              </Tooltip>
+            )
+          )}
         </div>
         <Separator orientation="vertical" className="h-6 ml-6 mr-4" />
 

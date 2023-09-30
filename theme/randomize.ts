@@ -17,11 +17,12 @@ const schemes = [
   "monochromatic",
 ] as Scheme[];
 
-export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
-  // Get Scheme :
-  const scheme = schemes[Math.floor(Math.random() * schemes.length)];
-  const jitterAmount = 10;
+const jitterAmount = 10;
 
+export const getScheme = (colors: Color[]) =>
+  schemes[Math.floor(Math.random() * schemes.length)];
+
+export const getHues = (colors: Color[], scheme: string) => {
   // Get base Hue :
   let primaryHue = 0;
   let secondaryHues: number[] = [];
@@ -70,6 +71,13 @@ export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
         break;
     }
   }
+  return { primaryHue, secondaryHues };
+};
+
+export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
+  // Get Scheme :
+  const scheme = getScheme(colors);
+  const { primaryHue, secondaryHues } = getHues(colors, scheme);
 
   const vars = [
     ["--background", "--foreground"],
@@ -172,6 +180,19 @@ export const randomizeColors = (colors: Color[], mode: "light" | "dark") => {
       return c;
     }
   });
+};
+
+export const randomColor = (varName: string, mode: "light" | "dark") => {
+  const scheme = getScheme([]);
+  const { primaryHue, secondaryHues } = getHues([], scheme);
+  const vConstains = varConstraints(varName, mode);
+  const vColor = generateColor(
+    primaryHue,
+    secondaryHues,
+    jitterAmount,
+    vConstains
+  );
+  return vColor;
 };
 
 const varConstraints = (v: string, mode: "light" | "dark") => {

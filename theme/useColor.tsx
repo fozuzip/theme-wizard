@@ -27,16 +27,11 @@ type ColorsContextType = {
   headingFont: string;
   borderRadius: string;
   otherModeColors: Color[];
-  uniqueColors: (Color & { varNames: string[] })[];
   setColor: (varName: string, color: Hsl | string) => void;
+  setBatchColors: (varNames: string[], color: Hsl | string) => void;
   setBodyFont: (font: string) => void;
   setHeadingFont: (font: string) => void;
   setBorderRadius: (borderRadius: string) => void;
-  setUniqueColor: (
-    colorHsl: Hsl,
-    newColor: Hsl | string,
-    varNames?: string[]
-  ) => void;
   getColor: (varName: string) => Color | undefined;
   undo: () => void;
   canUndo: boolean;
@@ -44,7 +39,7 @@ type ColorsContextType = {
   canRedo: boolean;
   save: () => void;
   setLock: (varName: string, locked: boolean) => void;
-  setUniqueLock: (colorHsl: Hsl, locked: boolean) => void;
+  setBatchLock: (varNames: string[], locked: boolean) => void;
   setLockAllColors: (locked: boolean) => void;
   toggleMode: () => void;
   randomize: () => void;
@@ -57,12 +52,11 @@ const ColorsContext = createContext<ColorsContextType>({
   colors: initialColorsDark,
   borderRadius: "0.5rem",
   otherModeColors: initialColorsLight,
-  uniqueColors: [],
   setColor: (varName: string, color: Hsl | string) => {},
+  setBatchColors: (varNames: string[], color: Hsl | string) => {},
   setBodyFont: (font: string) => {},
   setHeadingFont: (font: string) => {},
   setBorderRadius: (borderRadius: string) => {},
-  setUniqueColor: (colorHsl: Hsl, newColor: Hsl | string) => {},
   getColor: () => undefined,
   undo: () => {},
   canUndo: false,
@@ -70,7 +64,7 @@ const ColorsContext = createContext<ColorsContextType>({
   canRedo: false,
   save: () => {},
   setLock: (varName: string, locked: boolean) => {},
-  setUniqueLock: () => {},
+  setBatchLock: (varNames: string[], locked: boolean) => {},
   setLockAllColors: () => {},
   toggleMode: () => {},
   randomize: () => {},
@@ -145,9 +139,12 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     updateCssVariable("--radius", borderRadius);
   }, [borderRadius]);
 
-  const setColor = (varName: string, color: Hsl | string) => {
+  const setColor = (varName: string, color: Hsl | string) =>
+    setBatchColors([varName], color);
+
+  const setBatchColors = (varNames: string[], color: Hsl | string) => {
     const newColors = colors.map((c) => {
-      if (c.varName === varName && !c.locked) {
+      if (varNames.includes(c.varName) && !c.locked) {
         const newColor = {
           ...c,
         };
@@ -179,64 +176,12 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
     return colors.find((c) => c.varName === varName);
   };
 
-  const uniqueColors = useMemo(() => {
-    const uniqueColors = new Set<string>();
-    let filteredVariables = [];
+  const setLock = (varName: string, locked: boolean) =>
+    setBatchLock([varName], locked);
 
-    for (const color of colors) {
-      if (!uniqueColors.has(color.colorHex)) {
-        uniqueColors.add(color.colorHex);
-        filteredVariables.push({ ...color, varNames: [color.varName] });
-      } else {
-        const existingColor = filteredVariables.find(
-          (c) => c.colorHex === color.colorHex
-        );
-        if (existingColor) {
-          existingColor.varNames.push(color.varName);
-        }
-      }
-    }
-
-    return filteredVariables;
-  }, [colors]);
-
-  const setUniqueColor = (colorHsl: Hsl, newColor: Hsl | string) => {
+  const setBatchLock = (varNames: string[], locked: boolean) => {
     const newColors = colors.map((c) => {
-      const isSameColor =
-        c.colorHsl.h === colorHsl.h &&
-        c.colorHsl.s === colorHsl.s &&
-        c.colorHsl.l === colorHsl.l;
-
-      if (isSameColor && !c.locked) {
-        const newC = {
-          ...c,
-        };
-        let colorHsl: Hsl;
-        let colorHex: string;
-
-        if (typeof newColor === "string") {
-          colorHsl = hexToHsl(newColor);
-          colorHex = newColor;
-        } else {
-          colorHsl = newColor;
-          colorHex = hslToHex(newColor);
-        }
-
-        newC.colorHsl = colorHsl;
-        newC.colorHex = colorHex;
-
-        return newC;
-      } else {
-        return c;
-      }
-    });
-
-    setColors(newColors);
-  };
-
-  const setLock = (varName: string, locked: boolean) => {
-    const newColors = colors.map((c) => {
-      if (c.varName === varName) {
+      if (varNames.includes(c.varName)) {
         const newColor = {
           ...c,
         };
@@ -244,28 +189,6 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         newColor.locked = locked;
 
         return newColor;
-      } else {
-        return c;
-      }
-    });
-
-    setColors(newColors);
-  };
-
-  const setUniqueLock = (colorHsl: Hsl, locked: boolean) => {
-    const newColors = colors.map((c) => {
-      if (
-        c.colorHsl.h === colorHsl.h &&
-        c.colorHsl.s === colorHsl.s &&
-        c.colorHsl.l === colorHsl.l
-      ) {
-        const newC = {
-          ...c,
-        };
-
-        newC.locked = locked;
-
-        return newC;
       } else {
         return c;
       }
@@ -305,12 +228,11 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         headingFont,
         borderRadius,
         otherModeColors,
-        uniqueColors,
         setColor,
+        setBatchColors,
         setBodyFont,
         setHeadingFont,
         setBorderRadius,
-        setUniqueColor,
         getColor,
         undo,
         canUndo,
@@ -318,7 +240,7 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
         canRedo,
         save,
         setLock,
-        setUniqueLock,
+        setBatchLock,
         setLockAllColors,
         toggleMode,
         randomize,

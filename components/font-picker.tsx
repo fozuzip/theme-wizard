@@ -201,7 +201,7 @@ export default class FontPicker extends PureComponent<Props, State> {
       return <div />;
     }
     return (
-      <SelectContent className="font-list max-h-[400px] overflow-auto">
+      <SelectContent className="font-list max-h-[400px] overflow-auto z-[101]">
         {fonts.map((font, i): ReactElement => {
           const fontId = getFontId(font.family);
           return (

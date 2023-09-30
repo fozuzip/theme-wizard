@@ -40,17 +40,19 @@ export const ColorButton = ({
           )}
         />
       </div>
-      <div
-        className="absolute left-0 w-full -bottom-6 h-4 cursor-pointer "
-        onClick={handleToggleLock}
-      >
+      {onLockToggle && (
         <div
-          className={cn(
-            "w-full h-1 mt-3 rounded-sm group-hover:mt-1 group-hover:h-3 transition-all",
-            isLocked ? "bg-red-300/70" : "bg-green-300/30"
-          )}
-        />
-      </div>
+          className="absolute left-0 w-full -bottom-6 h-4 cursor-pointer "
+          onClick={handleToggleLock}
+        >
+          <div
+            className={cn(
+              "w-full h-1 mt-3 rounded-sm group-hover:mt-1 group-hover:h-3 transition-all",
+              isLocked ? "bg-red-300/70" : "bg-green-300/30"
+            )}
+          />
+        </div>
+      )}
     </div>
   );
 };
