@@ -9,18 +9,8 @@ interface ColorButtonProps {
   onLockToggle?: (value: boolean) => void;
 }
 
-export const ColorButton = ({
-  hex,
-  onClick,
-  isLocked,
-  onLockToggle,
-}: ColorButtonProps) => {
+export const ColorButton = ({ hex, onClick, isLocked }: ColorButtonProps) => {
   const textColor = chroma.contrast(hex, "#000") >= 4.5 ? "black" : "white";
-
-  const handleToggleLock = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onLockToggle?.(!isLocked);
-  };
 
   const LockIcon = isLocked ? Lock : Unlock;
 
@@ -40,19 +30,6 @@ export const ColorButton = ({
           )}
         />
       </div>
-      {onLockToggle && (
-        <div
-          className="absolute left-0 w-full -bottom-6 h-4 cursor-pointer "
-          onClick={handleToggleLock}
-        >
-          <div
-            className={cn(
-              "w-full h-1 mt-3 rounded-sm group-hover:mt-1 group-hover:h-3 transition-all",
-              isLocked ? "bg-red-300/70" : "bg-green-300/30"
-            )}
-          />
-        </div>
-      )}
     </div>
   );
 };

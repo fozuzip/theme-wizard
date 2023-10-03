@@ -36,7 +36,7 @@ export const ColorPicker = ({
 }: ColorPickerProps) => {
   const { mode } = useColors();
   const [hexInputValue, setHexInputValue] = useState(valueHex);
-  const [accordionOpen, setAccordionOpen] = useState(false);
+
   const [suggestedColors, setSuggestedColors] = useState<string[]>([]);
 
   useEffect(() => {
@@ -100,12 +100,7 @@ export const ColorPicker = ({
           <LockIcon className="w-4 h-4" />
         </Button>
       </div>
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full"
-        onValueChange={(value) => setAccordionOpen(!!value)}
-      >
+      <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1" className="pb-0">
           <AccordionTrigger className="w-full">
             <div className="relative h-4 flex items-center justify-center">

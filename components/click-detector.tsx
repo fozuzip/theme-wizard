@@ -1,8 +1,8 @@
 "use client";
 
 import { colorNames } from "@/theme/useColor";
-import { set } from "date-fns";
 import { useEffect, useRef, useState } from "react";
+import { ColorsToolbar } from "./colors-toolbar";
 
 export type Selection = {
   elementTag: string;
@@ -14,26 +14,29 @@ export type Selection = {
 
 interface ClickDetectorProps {
   children: React.ReactNode;
-  selection: Selection | null;
-  onSelection: (selection: Selection | null) => void;
 }
 
-export const ClickDetector = ({
-  children,
-  selection,
-  onSelection,
-}: ClickDetectorProps) => {
+export const ClickDetector = ({ children }: ClickDetectorProps) => {
+  const [selection, setSelection] = useState<Selection | null>(null);
+
   const divRef = useRef(null);
 
   const [selectedElement, setSelectedElement] = useState<HTMLElement | null>();
 
+  const [rect, setRect] = useState<DOMRect | null>();
+
   const handleClick = (event: MouseEvent) => {
     event.preventDefault();
 
-    let clickedElement = getContainerElement(event.target as HTMLElement);
+    if (isInToolbar(event.target as HTMLElement)) return;
+
+    const { element: clickedElement, isContainer } = getContainerElement(
+      event.target as HTMLElement
+    );
+
     if (!clickedElement) {
       setSelectedElement(null);
-      onSelection(null);
+      setSelection(null);
       return;
     }
 
@@ -48,9 +51,11 @@ export const ClickDetector = ({
       : null;
 
     const containingColors = getElementsColors(clickedElement);
-    colors = Array.from(
-      new Set([...containingColors, backgroundColor, textColor])
-    ).filter(Boolean) as string[];
+    colors = isContainer
+      ? ([backgroundColor] as string[])
+      : (Array.from(new Set([...containingColors, textColor])).filter(
+          Boolean
+        ) as string[]);
 
     hasBorder = !!colors.find((color) => ["border", "input"].includes(color));
 
@@ -66,7 +71,7 @@ export const ClickDetector = ({
     hasBodyText = elementHasBodyText(clickedElement);
 
     setSelectedElement(clickedElement);
-    onSelection({
+    setSelection({
       elementTag: clickedElement.tagName.toLocaleLowerCase(),
       colors,
       hasHeading,
@@ -78,9 +83,11 @@ export const ClickDetector = ({
   useEffect(() => {
     if (!selectedElement) return;
     addHighlight(selectedElement);
+    setRect(selectedElement.getBoundingClientRect());
 
     return () => {
       removeHighlight(selectedElement);
+      setRect(null);
     };
   }, [selectedElement]);
 
@@ -101,10 +108,23 @@ export const ClickDetector = ({
     };
   }, [divRef, selection]);
   // Render the wrapped components as children
+
+  console.log(rect);
   return (
-    <div ref={divRef} className="cursor-pointer">
-      {children}
-    </div>
+    <>
+      <div ref={divRef} className="cursor-pointer">
+        {children}
+      </div>
+      {rect && (
+        <div
+          className="absolute p-3"
+          style={{ top: rect.y - 8, left: rect.x + rect.width + 16 }}
+          onClick={() => console.log("click")}
+        >
+          <ColorsToolbar selection={selection} />
+        </div>
+      )}
+    </>
   );
 };
 
@@ -122,6 +142,17 @@ const removeHighlight = (element: HTMLElement) => {
   element.classList.remove("ring-offset-background");
   element.classList.remove("ring-primary");
   element.classList.remove("rounded-sm");
+};
+
+const isInToolbar = (element: HTMLElement): boolean => {
+  const isToolbar = Array.from(element.classList).includes("tn-poulo");
+  if (isToolbar) return true;
+
+  if (element.parentElement) {
+    return isInToolbar(element.parentElement);
+  } else {
+    return false;
+  }
 };
 
 const getElementsColors = (element: HTMLElement): string[] => {
@@ -235,15 +266,24 @@ const elementHasBodyText = (element: HTMLElement): boolean => {
   return false;
 };
 
-const getContainerElement = (element: HTMLElement): HTMLElement | null => {
-  if (element.tagName === "BODY") return null;
+const getContainerElement = (
+  element: HTMLElement
+): { element: HTMLElement | null; isContainer: boolean } => {
+  console.log(element);
+  if (element.tagName === "BODY") return { element: null, isContainer: false };
 
   if (element.tagName !== "DIV" && element.tagName !== "SECTION")
-    return element;
-  if (element.classList.contains("border")) return element;
-  else if (element.parentElement) {
+    return { element, isContainer: false };
+  if (element.classList.contains("border")) {
+    if (element.classList.contains("no-container")) {
+      return { element, isContainer: false };
+    } else {
+      console.log("here");
+      return { element, isContainer: true };
+    }
+  } else if (element.parentElement) {
     return getContainerElement(element.parentElement);
   }
 
-  return null;
+  return { element: null, isContainer: false };
 };

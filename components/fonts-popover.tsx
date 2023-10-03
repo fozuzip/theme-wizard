@@ -25,7 +25,7 @@ export const FontsPopover = () => {
 
   return (
     <Popover>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button size="icon" variant="ghost">
           <Type size={20} />
         </Button>

@@ -10,14 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Popover } from "./ui/popover";
 
 export const BorderRadiusSelect = () => {
-  const { borderRadius, setBorderRadius, mode } = useColors();
+  const { borderRadius, setBorderRadius } = useColors();
 
   return (
     <Select value={borderRadius} onValueChange={setBorderRadius}>
       <SelectTrigger
-        className="border-0 w-[80px] hover:bg-accent hover:text-accent-foreground"
+        className="border-0 w-[80px] hover:bg-accent hover:text-accent-foreground z-[101]"
         showChevron={false}
       >
         <div className="w-5 h-5 border rounded-md border-foreground" />

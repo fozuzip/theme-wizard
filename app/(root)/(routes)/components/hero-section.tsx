@@ -8,7 +8,7 @@ import { Blobs } from "@/components/blobs";
 export const HeroSection = () => {
   return (
     <section className="flex h-[400px] rounded-lg py-8">
-      <div className="p-2 pr-20">
+      <div className="p-2 pr-20 border border-transparent">
         <h3
           className="h-7 text-base font-semibold leading-7 text-primary"
           aria-hidden="true"
@@ -38,21 +38,14 @@ export const HeroSection = () => {
             <ArrowRight size={16} />
           </Button>
 
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log("click click mf");
-            }}
-            className="flex gap-2 items-center font-semibold"
-          >
+          <Button className="flex gap-2 items-center font-semibold">
             Get Started
             <ArrowRight size={16} />
           </Button>
         </div>
       </div>
 
-      <div className="flex-1 border border-transparent">
+      <div className="flex-1 border border-transparent no-container">
         <Blobs />
       </div>
     </section>
