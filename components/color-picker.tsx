@@ -24,6 +24,7 @@ interface ColorPickerProps {
   onChange: (value: Hsl | string) => void;
   isLocked: boolean;
   toggleLock: (value: boolean) => void;
+  hideSuggested?: boolean;
 }
 
 export const ColorPicker = ({
@@ -33,6 +34,7 @@ export const ColorPicker = ({
   onChange,
   isLocked,
   toggleLock,
+  hideSuggested,
 }: ColorPickerProps) => {
   const { mode } = useColors();
   const [hexInputValue, setHexInputValue] = useState(valueHex);
@@ -100,40 +102,42 @@ export const ColorPicker = ({
           <LockIcon className="w-4 h-4" />
         </Button>
       </div>
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="item-1" className="pb-0">
-          <AccordionTrigger className="w-full">
-            <div className="relative h-4 flex items-center justify-center">
-              <Separator orientation="horizontal" className="w-full" />
-              <div className="absolute inset-0 flex justify-center">
-                <p className="w-[120px] text-xs text-muted-foreground bg-popover">
-                  Suggested colors
-                </p>
+      {!hideSuggested && (
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1" className="pb-0">
+            <AccordionTrigger className="w-full">
+              <div className="relative h-4 flex items-center justify-center">
+                <Separator orientation="horizontal" className="w-full" />
+                <div className="absolute inset-0 flex justify-center">
+                  <p className="w-[120px] text-xs text-muted-foreground bg-popover">
+                    Suggested colors
+                  </p>
+                </div>
               </div>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="p-1 pt-4">
-            <div className="flex items-center flex-wrap max-w-[200px] gap-2">
-              {suggestedColors.map((color) => (
-                <div
-                  key={color}
-                  className="w-6 h-6 cursor-pointer rounded-md ring-2 ring-white"
-                  style={{ backgroundColor: color }}
-                  onClick={() => onChange(color)}
-                />
-              ))}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={generateSuggestedColors}
-                className="w-7 h-7"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </Button>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+            </AccordionTrigger>
+            <AccordionContent className="p-1 pt-4">
+              <div className="flex items-center flex-wrap max-w-[200px] gap-2">
+                {suggestedColors.map((color) => (
+                  <div
+                    key={color}
+                    className="w-6 h-6 cursor-pointer rounded-md ring-2 ring-white"
+                    style={{ backgroundColor: color }}
+                    onClick={() => onChange(color)}
+                  />
+                ))}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={generateSuggestedColors}
+                  className="w-7 h-7"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </Button>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
     </div>
   );
 };

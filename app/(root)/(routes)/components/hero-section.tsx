@@ -7,8 +7,8 @@ import { Blobs } from "@/components/blobs";
 
 export const HeroSection = () => {
   return (
-    <section className="flex h-[400px] rounded-lg py-8">
-      <div className="p-2 pr-20 border border-transparent">
+    <section className="flex h-[600px] rounded-lg py-8">
+      <div className="p-2 pr-20 border border-transparent flex flex-col h-full justify-around">
         <h3
           className="h-7 text-base font-semibold leading-7 text-primary"
           aria-hidden="true"
@@ -17,16 +17,20 @@ export const HeroSection = () => {
         </h3>
 
         <h1 className="col-start-1 row-start-2 mt-4 max-w-[36rem] text-4xl font-extrabold tracking-tight text-foreground sm:text-7xl xl:max-w-[43.5rem] apply-font-heading">
-          Watch your{" "}
+          Discover the{" "}
           <span className="bg-gradient-to-r from-primary to-destructive bg-clip-text text-transparent ">
             theme
-          </span>{" "}
-          come to life
+          </span>
+          <br />
+          of your next project
         </h1>
 
-        <p className="col-start-1 row-start-3 mt-4 max-w-lg text-lg text-muted-foreground">
-          Choose the colour pallete for your next app, website, blog. Optimized
-          to work with tailwind css and shadcn-ui.
+        <p className="col-start-1 row-start-3 mt-4 max-w-xl text-lg text-muted-foreground">
+          A simple, intuitive tool for theming{" "}
+          <span className="text-primary text-bold">tailwind</span> and{" "}
+          <span className="text-primary text-bold">shadcn/ui</span> apps. Use
+          the toolbar on top to try different color palettes and fonts. Click
+          any element on the page to fine-tune your design.
         </p>
 
         <div className="col-start-1 row-start-4 mt-10 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
@@ -45,8 +49,10 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      <div className="flex-1 border border-transparent no-container">
-        <Blobs />
+      <div className="flex-1  h-full flex flex-col justify-center">
+        <div className="w-full h-[400px] border border-transparent no-container">
+          <Blobs />
+        </div>
       </div>
     </section>
   );

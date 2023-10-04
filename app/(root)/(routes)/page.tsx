@@ -4,6 +4,7 @@ import { HeroSection } from "./components/hero-section";
 import { Examples } from "./components/examples";
 import { useEffect } from "react";
 import useColors from "@/theme/useColor";
+import { Features, HowTo } from "./components/more";
 
 export default function Home() {
   const { headingFont } = useColors();
@@ -25,6 +26,8 @@ export default function Home() {
         <div className="pt-32">
           <Examples />
         </div>
+        <Features />
+        <HowTo />
       </div>
     </>
   );

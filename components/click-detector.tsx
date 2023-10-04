@@ -28,7 +28,7 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
   const handleClick = (event: MouseEvent) => {
     event.preventDefault();
 
-    if (isInToolbar(event.target as HTMLElement)) return;
+    if (isUnselectable(event.target as HTMLElement)) return;
 
     const { element: clickedElement, isContainer } = getContainerElement(
       event.target as HTMLElement
@@ -109,7 +109,6 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
   }, [divRef, selection]);
   // Render the wrapped components as children
 
-  console.log(rect);
   return (
     <>
       <div ref={divRef} className="cursor-pointer">
@@ -144,12 +143,12 @@ const removeHighlight = (element: HTMLElement) => {
   element.classList.remove("rounded-sm");
 };
 
-const isInToolbar = (element: HTMLElement): boolean => {
-  const isToolbar = Array.from(element.classList).includes("tn-poulo");
+const isUnselectable = (element: HTMLElement): boolean => {
+  const isToolbar = Array.from(element.classList).includes("no-select");
   if (isToolbar) return true;
 
   if (element.parentElement) {
-    return isInToolbar(element.parentElement);
+    return isUnselectable(element.parentElement);
   } else {
     return false;
   }
