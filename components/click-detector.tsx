@@ -122,17 +122,17 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
 
 const addHighlight = (element: HTMLElement) => {
   element.classList.add("ring");
+  element.classList.add("ring-ring");
   element.classList.add("ring-offset-4");
   element.classList.add("ring-offset-background");
-  element.classList.add("ring-sky-500");
   element.classList.add("rounded-sm");
 };
 
 const removeHighlight = (element: HTMLElement) => {
   element.classList.remove("ring");
+  element.classList.remove("ring-ring");
   element.classList.remove("ring-offset-4");
   element.classList.remove("ring-offset-background");
-  element.classList.remove("ring-primary");
   element.classList.remove("rounded-sm");
 };
 
