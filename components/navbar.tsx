@@ -29,6 +29,7 @@ import {
 
 import { useEffect, useState } from "react";
 import { ColorsToolbar } from "./colors-toolbar";
+import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 
 export const Navbar = () => {
   const { colors, undo, canUndo, redo, canRedo, setLockAllColors, randomize } =
@@ -37,18 +38,19 @@ export const Navbar = () => {
 
   // TODO : Multiple hotkeys ?
   useHotkeys(
-    "ctrl+z",
+    ["ctrl+z", "command+z"],
     () => {
+      console.log("ctrl+z");
       if (canUndo) undo();
     },
-    []
+    [canUndo]
   );
   useHotkeys(
-    "shift+ctrl+z",
+    ["ctrl+y", "command+y"],
     () => {
       if (canRedo) redo();
     },
-    []
+    [canRedo]
   );
 
   useHotkeys(
@@ -57,12 +59,13 @@ export const Navbar = () => {
       setColorLock(!colorLock);
       setLockAllColors(!colorLock);
     },
-    []
+    [colorLock]
   );
 
   useHotkeys(
-    "r",
-    () => {
+    ["space", "r"],
+    (e) => {
+      e.preventDefault();
       randomize();
     },
     []
@@ -77,6 +80,8 @@ export const Navbar = () => {
       if (allLocked) setColorLock(true);
     }
   }, [colors, colorLock]);
+
+  const isMac = /macintosh|mac os x/i.test(navigator.userAgent.toLowerCase());
 
   const LockIcon = colorLock ? Lock : Unlock;
 
@@ -94,42 +99,111 @@ export const Navbar = () => {
               <ColorsToolbar popoverAsModal />
               <Separator orientation="vertical" className="h-6 ml-6 mr-4" />
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  setColorLock(!colorLock);
-                  setLockAllColors(!colorLock);
-                }}
-              >
-                <LockIcon className="w-4 h-4" />
-              </Button>
-              <Button size="icon" variant="ghost" onClick={randomize}>
-                <Dice5 size={20} />
-              </Button>
+              <Tooltip delayDuration={300}>
+                <TooltipTrigger>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setColorLock(!colorLock);
+                      setLockAllColors(!colorLock);
+                    }}
+                  >
+                    <LockIcon className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="p-1">
+                    {!colorLock ? "Lock" : "Unlock"} all
+                    <span className="bg-muted text-muted-foreground px-2 py-1 ml-2 rounded-md">
+                      L
+                    </span>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip delayDuration={300}>
+                <TooltipTrigger>
+                  <Button size="icon" variant="ghost" onClick={randomize}>
+                    <Dice5 size={20} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="p-2">
+                    Randomize
+                    <span className="bg-muted text-muted-foreground px-2 py-1 mx-2 rounded-md">
+                      Space
+                    </span>{" "}
+                    /{" "}
+                    <span className="bg-muted text-muted-foreground px-2 py-1 ml-2 rounded-md">
+                      R
+                    </span>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
-            <FontsPopover />
-            <BorderRadiusSelect />
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger>
+                <FontsPopover />
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="p-2">Fonts</div>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger>
+                <BorderRadiusSelect />
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="p-2">Border radius</div>
+              </TooltipContent>
+            </Tooltip>
             <Separator orientation="vertical" className="h-6 ml-6 mx-4" />
-            <Button
-              size="icon"
-              variant="ghost"
-              disabled={!canUndo}
-              onClick={() => undo()}
-            >
-              <Undo size={20} />
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              disabled={!canRedo}
-              onClick={() => redo()}
-            >
-              <Redo size={20} />
-            </Button>
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  disabled={!canUndo}
+                  onClick={() => undo()}
+                >
+                  <Undo size={20} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="p-2">
+                  Undo
+                  <span className="bg-muted text-muted-foreground px-2 py-1 ml-2 rounded-md">
+                    {isMac ? "⌘ + Z" : "Ctrl + Z"}
+                  </span>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  disabled={!canRedo}
+                  onClick={() => redo()}
+                >
+                  <Redo size={20} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="p-2">
+                  Redo
+                  <span className="bg-muted text-muted-foreground px-2 py-1 ml-2 rounded-md">
+                    {isMac ? "⌘ + Y" : "Ctrl + Y"}
+                  </span>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+
             <ModeToggle />
             <Dialog>
               <DialogTrigger asChild>

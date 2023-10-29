@@ -69,6 +69,14 @@ export const ColorsToolbar = ({
     setBatchLock(group.varNames, locked);
   };
 
+  const getDisplayVarName = (varName: string) => {
+    const words = varName.split("-");
+    const capitalizedWords = words.map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1)
+    );
+    return capitalizedWords.join(" ");
+  };
+
   return (
     <div
       className="flex items-center space-x-4"
@@ -89,11 +97,27 @@ export const ColorsToolbar = ({
             modal={popoverAsModal}
           >
             <PopoverTrigger>
-              <ColorButton
-                hex={colorHex}
-                isLocked={locked}
-                onLockToggle={(value) => handleGroupLock(varName, value)}
-              />
+              <Tooltip delayDuration={300}>
+                <TooltipTrigger>
+                  <ColorButton
+                    hex={colorHex}
+                    isLocked={locked}
+                    onLockToggle={(value) => handleGroupLock(varName, value)}
+                  />
+                </TooltipTrigger>
+
+                <TooltipContent>
+                  <>
+                    <div className="font-bold pb-2">{colorHex}</div>
+
+                    <ul className="text-left pb-2">
+                      {varNames.map((varName) => (
+                        <li key={varName}>{getDisplayVarName(varName)}</li>
+                      ))}
+                    </ul>
+                  </>
+                </TooltipContent>
+              </Tooltip>
             </PopoverTrigger>
             <PopoverContent sideOffset={14} className="w-59 p-3 z-[101]">
               <ColorPicker
