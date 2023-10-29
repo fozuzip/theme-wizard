@@ -10,18 +10,18 @@ body,
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 0;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: hsl(var(--mutted-foreground));
+  background: hsl(var(--background));
   border-radius: 5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--background));
+  background: hsl(var(--muted-foreground));
   border-radius: 5px;
 }
 

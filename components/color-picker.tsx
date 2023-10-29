@@ -59,7 +59,7 @@ export const ColorPicker = ({
 
   const generateSuggestedColors = () => {
     let suggested = [];
-    for (let index = 0; index < 11; index++) {
+    for (let index = 0; index < 8; index++) {
       suggested.push(hslToHex(randomColor(varName, mode)));
     }
     setSuggestedColors(suggested);
@@ -116,11 +116,11 @@ export const ColorPicker = ({
               </div>
             </AccordionTrigger>
             <AccordionContent className="p-1 pt-4">
-              <div className="flex items-center flex-wrap max-w-[200px] gap-2">
+              <div className="flex items-center flex-wrap max-w-[200px] gap-4">
                 {suggestedColors.map((color) => (
                   <div
                     key={color}
-                    className="w-6 h-6 cursor-pointer rounded-md ring-2 ring-white"
+                    className="w-6 h-6 cursor-pointer rounded-md ring-2 ring-offset-2 ring-offset-background"
                     style={{ backgroundColor: color }}
                     onClick={() => onChange(color)}
                   />

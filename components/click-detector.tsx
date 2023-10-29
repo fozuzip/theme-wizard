@@ -107,8 +107,17 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
       }
     };
   }, [divRef, selection]);
-  // Render the wrapped components as children
 
+  // Disable Scroll when there is a selection
+  useEffect(() => {
+    if (selection) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [selection]);
+
+  // Render the wrapped components as children
   return (
     <>
       <div ref={divRef} className="cursor-pointer">
@@ -116,9 +125,8 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
       </div>
       {rect && (
         <div
-          className="absolute p-3"
+          className="fixed p-3"
           style={{ top: rect.y - 8, left: rect.x + rect.width + 16 }}
-          onClick={() => console.log("click")}
         >
           <ColorsToolbar selection={selection} />
         </div>

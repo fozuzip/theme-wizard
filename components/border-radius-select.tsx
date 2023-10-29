@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Popover } from "./ui/popover";
 
 export const BorderRadiusSelect = () => {
   const { borderRadius, setBorderRadius } = useColors();
