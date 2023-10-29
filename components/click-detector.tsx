@@ -7,9 +7,6 @@ import { ColorsToolbar } from "./colors-toolbar";
 export type Selection = {
   elementTag: string;
   colors: string[];
-  hasHeading: boolean;
-  hasBodyText: boolean;
-  hasBorder: boolean;
 };
 
 interface ClickDetectorProps {
@@ -41,9 +38,6 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
     }
 
     let colors = [];
-    let hasHeading = false;
-    let hasBodyText = false;
-    let hasBorder = false;
 
     const backgroundColor = findColor(clickedElement, "bg", true);
     const textColor = clickedElement.innerText
@@ -57,26 +51,17 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
           Boolean
         ) as string[]);
 
-    hasBorder = !!colors.find((color) => ["border", "input"].includes(color));
-
-    hasHeading = elementHas(clickedElement, [
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "h5",
-      "h6",
-    ]);
-
-    hasBodyText = elementHasBodyText(clickedElement);
+    const hasBorder =
+      clickedElement.classList.contains("border") &&
+      !clickedElement.classList.contains("border-transparent");
+    if (hasBorder) {
+      colors.push("border");
+    }
 
     setSelectedElement(clickedElement);
     setSelection({
       elementTag: clickedElement.tagName.toLocaleLowerCase(),
       colors,
-      hasHeading,
-      hasBodyText,
-      hasBorder,
     });
   };
 
