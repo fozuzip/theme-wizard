@@ -3,6 +3,8 @@
 import {
   ArrowRight,
   Dice5,
+  Github,
+  GithubIcon,
   Lock,
   Paintbrush,
   Redo,
@@ -224,6 +226,15 @@ export const Navbar = () => {
                 <ExportCode />
               </DialogContent>
             </Dialog>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() =>
+                window.open("https://github.com/fozuzip/theme-wizard", "_blank")
+              }
+            >
+              <Github size={16} />
+            </Button>
           </div>
         </div>
       </nav>

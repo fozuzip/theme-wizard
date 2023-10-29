@@ -1,10 +1,9 @@
 import { ColorPicker } from "@/components/color-picker";
 import { Badge } from "@/components/ui/badge";
-import { ExamplePicker } from "./example-picker";
 
 export const Features = () => {
   return (
-    <div className="pt-32">
+    <section id="features" className="pt-32">
       <div className="flex justify-center">
         <Badge>Features</Badge>
       </div>
@@ -136,56 +135,6 @@ export const Features = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export const HowTo = () => {
-  return (
-    <div className="pt-32">
-      <h1 className="text-4xl font-bold tracking-tight pb-16">How it works:</h1>
-      <div className="flex items-center gap-12">
-        <div className="flex gap-6 border rounded-md no-select p-6">
-          <div className="w-[210px]">
-            <ExamplePicker />
-          </div>
-          <div className="w-[210px]">
-            <ExamplePicker />
-          </div>
-          <div className="w-[210px]">
-            <ExamplePicker />
-          </div>
-        </div>
-        <div className="space-y-6">
-          <p className="text-lg">
-            Theme Wizard simplifies color selection by displaying unique page
-            colors in the top toolbar, allowing easy customization via a color
-            picker, eyedropper, hex input, or suggested colors.
-          </p>
-          <p>
-            Experiment with color schemes using the Randomize button and
-            effortlessly switch between light and dark modes with the Mode
-            button.
-          </p>
-          <p>
-            Utilize Undo and Redo for comparing your changes and fixing
-            mistakes.
-          </p>
-          <p>
-            For precise element color adjustments, click on elements to access
-            their distinct colors.
-          </p>
-          <p>
-            Select fonts for headings and body text, including random Google
-            font options.
-          </p>
-          <p>Customize border radius effortlessly with the selector.</p>
-          <p>
-            When satisfied, export your theme&apos;s CSS with a single click,
-            streamlining integration into your project.
-          </p>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };

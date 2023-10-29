@@ -33,6 +33,41 @@ export default function RootLayout({
                 </div>
               </div>
             </ClickDetector>
+            <div className="container flex items-center justify-between gap-4 md:h-24 md:flex-row">
+              <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+                Built by{" "}
+                <a
+                  href="https://github.com/fozuzip"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium underline underline-offset-4"
+                >
+                  George Pittas
+                </a>
+                . Inspired by by{" "}
+                <a
+                  href="https://www.realtimecolors.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium underline underline-offset-4"
+                >
+                  Realtime Colors
+                </a>
+                .
+              </p>
+              <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+                The source code is available on{" "}
+                <a
+                  href="https://github.com/fozuzip/theme-wizard"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium underline underline-offset-4"
+                >
+                  GitHub
+                </a>
+                .
+              </p>
+            </div>
           </body>
         </html>
       </TooltipProvider>
