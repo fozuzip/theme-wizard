@@ -37,7 +37,9 @@ export const FontsPopover = () => {
             <FontPicker
               pickerId="heading"
               activeFontFamily={headingFont}
-              onChange={(nextFont) => setHeadingFont(nextFont.family)}
+              onChange={(nextFont) =>
+                nextFont && setHeadingFont(nextFont.family)
+              }
             />
             <Button
               size="icon"

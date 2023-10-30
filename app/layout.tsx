@@ -7,6 +7,7 @@ import { ColorsProvider } from "@/theme/useColor";
 import { Navbar } from "@/components/navbar";
 import { cn } from "@/lib/utils";
 import { ClickDetector } from "@/components/click-detector";
+import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,48 +26,59 @@ export default function RootLayout({
       <TooltipProvider>
         <html lang="en">
           <body className={cn(inter.className, "apply-font-body w-full")}>
-            <Navbar />
-            <ClickDetector>
-              <div className=" relative -mt-[5.75rem] overflow-hidden pb-16 pt-[5.75rem]">
-                <div className="relative mx-auto mt-16 w-full max-w-[85rem] px-4 sm:mt-20 sm:px-6 lg:px-8 xl:mt-32 apply-font-body">
-                  {children}
+            <div className="hidden xl:block">
+              <Navbar />
+              <ClickDetector>
+                <div className=" relative -mt-[5.75rem] overflow-hidden pb-16 pt-[5.75rem]">
+                  <div className="relative mx-auto mt-16 w-full max-w-[85rem] px-4 sm:mt-20 sm:px-6 lg:px-8 xl:mt-32 apply-font-body">
+                    {children}
+                  </div>
                 </div>
+              </ClickDetector>
+              <div className="container flex items-center justify-between gap-4 md:h-24 md:flex-row">
+                <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+                  Built by{" "}
+                  <a
+                    href="https://github.com/fozuzip"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-medium underline underline-offset-4"
+                  >
+                    George Pittas
+                  </a>
+                  . The source code is available on{" "}
+                  <a
+                    href="https://github.com/fozuzip/theme-wizard"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-medium underline underline-offset-4"
+                  >
+                    GitHub
+                  </a>
+                  .
+                </p>
+                <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+                  Inspired by by{" "}
+                  <a
+                    href="https://www.realtimecolors.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-medium underline underline-offset-4"
+                  >
+                    Realtime Colors
+                  </a>
+                  .
+                </p>
               </div>
-            </ClickDetector>
-            <div className="container flex items-center justify-between gap-4 md:h-24 md:flex-row">
-              <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                Built by{" "}
-                <a
-                  href="https://github.com/fozuzip"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-medium underline underline-offset-4"
-                >
-                  George Pittas
-                </a>
-                . Inspired by by{" "}
-                <a
-                  href="https://www.realtimecolors.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-medium underline underline-offset-4"
-                >
-                  Realtime Colors
-                </a>
-                .
-              </p>
-              <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                The source code is available on{" "}
-                <a
-                  href="https://github.com/fozuzip/theme-wizard"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-medium underline underline-offset-4"
-                >
-                  GitHub
-                </a>
-                .
-              </p>
+            </div>
+            <div className="flex xl:hidden flex-col items-center justify-center h-screen w-screen">
+              <Logo />
+              <h1 className="text-xl text-muted-foreground p-8">
+                This app does not currently support mobile devices.
+                <br />
+                For the best experience, please access it from a desktop or
+                tablet.
+              </h1>
             </div>
           </body>
         </html>
@@ -74,22 +86,3 @@ export default function RootLayout({
     </ColorsProvider>
   );
 }
-
-// DONE: Undo / Redo functionality
-// DONE: Lock Colors
-// DONE: Randomize Colors
-// DONE: Export Colors
-
-// DONE: Light / Dark mode
-
-// DONE: Background Color Select Component
-
-// DONE: Font Select Functionality ?
-
-// TODO: Tour How it works / Choose Main Colors / Typography Inputs / etc ... / Test it out
-
-// TODO: Footer with links ...
-
-// DONE: Fix Navbar flickering
-
-// TODO: Add toolbars with Short desc and hotkeys on every button

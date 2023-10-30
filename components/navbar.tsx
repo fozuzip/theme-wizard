@@ -217,24 +217,30 @@ export const Navbar = () => {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Theme</DialogTitle>
-                  <DialogDescription>
-                    Copy and paste the following code into your globals.css
-                    file.
-                  </DialogDescription>
+                  <DialogTitle>Export Code</DialogTitle>
                 </DialogHeader>
                 <ExportCode />
               </DialogContent>
             </Dialog>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() =>
-                window.open("https://github.com/fozuzip/theme-wizard", "_blank")
-              }
-            >
-              <Github size={16} />
-            </Button>
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() =>
+                    window.open(
+                      "https://github.com/fozuzip/theme-wizard",
+                      "_blank"
+                    )
+                  }
+                >
+                  <Github size={16} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="p-2">View Code</div>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </nav>
