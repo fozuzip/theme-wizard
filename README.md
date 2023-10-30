@@ -49,19 +49,22 @@ Check the live site: [themewizard.com](https://themewizard.com/)
 ## Getting Started
 
 1. Clone the repository: `git clone https://github.com/fozuzip/theme-wizard.git`
+
 2. Install dependencies: `npm install`
-      Create a `.env.local` file in the project's root directory.
-3. In the `.env.local` file, set the `NEXT_PUBLIC_FONTS_API_KEY` variable with a valid Google Fonts API key.
-      For example: NEXT_PUBLIC_FONTS_API_KEY=your-google-fonts-api-key
-      You can obtain a Google Fonts API key by following Google's API key creation instructions
-4. Run the development server: `npm run dev`
-5. Open your browser and visit `http://localhost:3000` to start using Theme Wizard.
+
+3. Create a `.env.local` file in the project's root directory.
+
+4. In the `.env.local` file, set the `NEXT_PUBLIC_FONTS_API_KEY` variable with a valid Google Fonts API key. For example: `NEXT_PUBLIC_FONTS_API_KEY=your-google-fonts-api-key`. You can obtain a Google Fonts API key by following Google's API key creation instructions
+
+5. Run the development server: `npm run dev`
+
+6. Open your browser and visit `http://localhost:3000` to start using Theme Wizard.
 
 ---
 
 ## Credits
 
-- Inspired by [Realtime Colors](https://www.realtimecolors.com/).
+Inspired by [Realtime Colors](https://www.realtimecolors.com/).
 
 ## License
 
