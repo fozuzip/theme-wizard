@@ -13,7 +13,9 @@ export default function Home() {
 
   useEffect(() => {
     // Select all heading elements (h1, h2, h3, etc.)
-    const headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    const headings = document
+      ? document.querySelectorAll("h1, h2, h3, h4, h5, h6")
+      : [];
 
     // Add the 'apply-font' class to each heading element
     headings.forEach((heading) => {
