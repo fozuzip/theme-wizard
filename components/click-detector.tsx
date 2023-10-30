@@ -95,7 +95,7 @@ export const ClickDetector = ({ children }: ClickDetectorProps) => {
 
   // Disable Scroll when there is a selection
   useEffect(() => {
-    if (selection && document) {
+    if (selection && typeof document !== "undefined") {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";

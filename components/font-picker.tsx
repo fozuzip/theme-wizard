@@ -147,9 +147,12 @@ export default class FontPicker extends PureComponent<Props, State> {
    */
   onClose = (e: MouseEvent): void => {
     let targetEl = e.target as Node; // Clicked element
-    const fontPickerEl = document
-      ? document.getElementById(`font-picker${this.fontManager.selectorSuffix}`)
-      : null;
+    const fontPickerEl =
+      typeof document !== "undefined"
+        ? document.getElementById(
+            `font-picker${this.fontManager.selectorSuffix}`
+          )
+        : null;
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
@@ -231,12 +234,14 @@ export default class FontPicker extends PureComponent<Props, State> {
       this.setState({
         expanded: false,
       });
-      document && document.removeEventListener("click", this.onClose);
+      typeof document !== "undefined" &&
+        document.removeEventListener("click", this.onClose);
     } else {
       this.setState({
         expanded: true,
       });
-      document && document.addEventListener("click", this.onClose);
+      typeof document !== "undefined" &&
+        document.addEventListener("click", this.onClose);
     }
   };
 

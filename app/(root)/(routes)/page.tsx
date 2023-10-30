@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import useColors from "@/theme/useColor";
-
 import { HeroSection } from "./components/hero-section";
 import { Examples } from "./components/examples";
 import { Features } from "./components/more";
