@@ -7,14 +7,14 @@ import {
 } from "@/components/ui/popover";
 import { Dice5, Type } from "lucide-react";
 import { Button } from "./ui/button";
-import FontPicker from "./font-picker";
 import useColors from "@/theme/useColor";
-import { useFont } from "@/hooks/useFont";
+// import { useFont } from "@/hooks/useFont";
+// import FontPicker from "./font-picker";
 
 export const FontsPopover = () => {
   const { bodyFont, headingFont, setBodyFont, setHeadingFont } = useColors();
 
-  const { fonts } = useFont();
+  // const { fonts } = useFont();
 
   const handleRandomize = (fontFamilyName: "body" | "heading") => {
     const newFontFamily =
@@ -26,7 +26,7 @@ export const FontsPopover = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size="icon" variant="ghost">
+        <Button size="icon" variant="ghost" disabled>
           <Type size={20} />
         </Button>
       </PopoverTrigger>
@@ -34,13 +34,13 @@ export const FontsPopover = () => {
         <div className="w-full">
           <p className="pb-2 text-sm">Heading</p>
           <div className="flex space-x-2">
-            <FontPicker
+            {/* <FontPicker
               pickerId="heading"
               activeFontFamily={headingFont}
               onChange={(nextFont) =>
                 nextFont && setHeadingFont(nextFont.family)
               }
-            />
+            /> */}
             <Button
               size="icon"
               variant="ghost"
@@ -54,11 +54,11 @@ export const FontsPopover = () => {
         <div className="w-full">
           <p className="pb-2 text-sm">Body</p>
           <div className="flex space-x-2">
-            <FontPicker
+            {/* <FontPicker
               pickerId="body"
               activeFontFamily={bodyFont}
               onChange={(nextFont) => setBodyFont(nextFont.family)}
-            />
+            /> */}
             <Button
               size="icon"
               variant="ghost"
