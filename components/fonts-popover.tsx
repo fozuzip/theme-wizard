@@ -16,12 +16,12 @@ export const FontsPopover = () => {
 
   // const { fonts } = useFont();
 
-  const handleRandomize = (fontFamilyName: "body" | "heading") => {
-    const newFontFamily =
-      fonts[Math.floor(Math.random() * fonts.length)].family;
-    if (fontFamilyName === "body") setBodyFont(newFontFamily);
-    else setHeadingFont(newFontFamily);
-  };
+  // const handleRandomize = (fontFamilyName: "body" | "heading") => {
+  //   const newFontFamily =
+  //     fonts[Math.floor(Math.random() * fonts.length)].family;
+  //   if (fontFamilyName === "body") setBodyFont(newFontFamily);
+  //   else setHeadingFont(newFontFamily);
+  // };
 
   return (
     <Popover>
@@ -31,16 +31,16 @@ export const FontsPopover = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="space-y-4 w-[220px] flex flex-col items-center z-[101]">
-        <div className="w-full">
+        {/* <div className="w-full">
           <p className="pb-2 text-sm">Heading</p>
           <div className="flex space-x-2">
-            {/* <FontPicker
+            <FontPicker
               pickerId="heading"
               activeFontFamily={headingFont}
               onChange={(nextFont) =>
                 nextFont && setHeadingFont(nextFont.family)
               }
-            /> */}
+            />
             <Button
               size="icon"
               variant="ghost"
@@ -54,11 +54,11 @@ export const FontsPopover = () => {
         <div className="w-full">
           <p className="pb-2 text-sm">Body</p>
           <div className="flex space-x-2">
-            {/* <FontPicker
+            <FontPicker
               pickerId="body"
               activeFontFamily={bodyFont}
               onChange={(nextFont) => setBodyFont(nextFont.family)}
-            /> */}
+            />
             <Button
               size="icon"
               variant="ghost"
@@ -68,7 +68,7 @@ export const FontsPopover = () => {
               <Dice5 className="w-5 h-5" />
             </Button>
           </div>
-        </div>
+        </div> */}
       </PopoverContent>
     </Popover>
   );
