@@ -13,9 +13,7 @@ import {
 } from "./utils";
 import { randomizeColors } from "./randomize";
 
-// TODO: Reset
-//const randomIndex = Math.floor(Math.random() * themes.length);
-const randomIndex = 0;
+const randomIndex = Math.floor(Math.random() * themes.length);
 
 const initialColorsLight = parseCSSVariables(themes[randomIndex].light);
 const initialColorsDark = parseCSSVariables(themes[randomIndex].dark);

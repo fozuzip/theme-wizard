@@ -261,7 +261,6 @@ const elementHasBodyText = (element: HTMLElement): boolean => {
 const getContainerElement = (
   element: HTMLElement
 ): { element: HTMLElement | null; isContainer: boolean } => {
-  console.log(element);
   if (element.tagName === "BODY") return { element: null, isContainer: false };
 
   if (element.tagName !== "DIV" && element.tagName !== "SECTION")
@@ -270,7 +269,6 @@ const getContainerElement = (
     if (element.classList.contains("no-container")) {
       return { element, isContainer: false };
     } else {
-      console.log("here");
       return { element, isContainer: true };
     }
   } else if (element.parentElement) {

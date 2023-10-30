@@ -4,15 +4,10 @@ import { useEffect, useState } from "react";
 export const useFont = (fontId?: string) => {
   const [activeFont, setFont] = useState("Inter");
   const [fontManager, setFontManager] = useState(
-    new FontManager(
-      process.env.NEXT_PUBLIC_FONTS_API_KEY || "",
-      "Inter",
-      {
-        pickerId: fontId,
-        variants: ["100", "200", "300", "500", "600", "700", "800", "900"],
-      } as Options,
-      () => console.log("change")
-    )
+    new FontManager(process.env.NEXT_PUBLIC_FONTS_API_KEY || "", "Inter", {
+      pickerId: fontId,
+      variants: ["100", "200", "300", "500", "600", "700", "800", "900"],
+    } as Options)
   );
 
   const [loadingStatus, setLoadingStatus] = useState("loading");

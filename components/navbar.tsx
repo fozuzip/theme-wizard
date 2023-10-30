@@ -38,7 +38,6 @@ export const Navbar = () => {
     useColors();
   const [colorLock, setColorLock] = useState(false);
 
-  // TODO : Multiple hotkeys ?
   useHotkeys(
     ["ctrl+z", "command+z"],
     () => {
@@ -88,7 +87,7 @@ export const Navbar = () => {
 
   return (
     <header className="fixed top-0 z-[100] w-screen flex-none text-sm font-semibold leading-6 bg-background border-b">
-      <nav className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto max-w-[95rem] px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center py-[1rem]">
           <a className="flex gap-3 items-center cursor-pointer">
             <Paintbrush className="w-8 h-8" />

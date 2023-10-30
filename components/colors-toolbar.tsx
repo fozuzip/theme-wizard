@@ -79,7 +79,7 @@ export const ColorsToolbar = ({
 
   return (
     <div
-      className="flex items-center space-x-4"
+      className="flex items-center space-x-4 z-10"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
