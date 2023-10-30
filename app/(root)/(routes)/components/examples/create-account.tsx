@@ -1,6 +1,5 @@
 "use client";
 
-import { ColorInspect } from "@/components/color-inspect";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
