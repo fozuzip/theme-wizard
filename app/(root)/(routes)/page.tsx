@@ -9,20 +9,6 @@ import { Features } from "./components/more";
 import { ChevronsDown } from "lucide-react";
 
 export default function Home() {
-  const { headingFont } = useColors();
-
-  useEffect(() => {
-    // Select all heading elements (h1, h2, h3, etc.)
-    const headings = document
-      ? document.querySelectorAll("h1, h2, h3, h4, h5, h6")
-      : [];
-
-    // Add the 'apply-font' class to each heading element
-    headings.forEach((heading) => {
-      heading.classList.add("apply-font-heading");
-    });
-  }, [headingFont]); // The empty dependency array ensures this effect runs only once
-
   return (
     <>
       <div className="bg-background text-foreground ">
