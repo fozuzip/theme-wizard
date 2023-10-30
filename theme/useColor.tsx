@@ -120,7 +120,7 @@ export const ColorsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateCssVariable = (varName: string, value: string) => {
-    document.documentElement.style.setProperty(varName, value);
+    document && document.documentElement.style.setProperty(varName, value);
   };
 
   const updateCssColorVariable = (color: Color) => {
