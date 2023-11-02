@@ -82,7 +82,7 @@ export const Navbar = () => {
   }, [colors, colorLock]);
 
   const isMac = /macintosh|mac os x/i.test(
-    typeof navigator !== "undefined" ? navigator.userAgent.toLowerCase() : ''
+    typeof navigator !== "undefined" ? navigator.userAgent.toLowerCase() : ""
   );
 
   const LockIcon = colorLock ? Lock : Unlock;
