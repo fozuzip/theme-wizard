@@ -11,27 +11,34 @@ import useColors from "@/theme/useColor";
 // import { useFont } from "@/hooks/useFont";
 // import FontPicker from "./font-picker";
 
+import dynamic from "next/dynamic";
+const useFont = dynamic(
+  () => import("@/hooks/useFont").then((mod) => mod.useFont),
+  { ssr: false }
+);
+const FontPicker = dynamic(() => import("./font-picker"), { ssr: false });
+
 export const FontsPopover = () => {
   const { bodyFont, headingFont, setBodyFont, setHeadingFont } = useColors();
 
-  // const { fonts } = useFont();
+  const { fonts } = useFont();
 
-  // const handleRandomize = (fontFamilyName: "body" | "heading") => {
-  //   const newFontFamily =
-  //     fonts[Math.floor(Math.random() * fonts.length)].family;
-  //   if (fontFamilyName === "body") setBodyFont(newFontFamily);
-  //   else setHeadingFont(newFontFamily);
-  // };
+  const handleRandomize = (fontFamilyName: "body" | "heading") => {
+    const newFontFamily =
+      fonts[Math.floor(Math.random() * fonts.length)].family;
+    if (fontFamilyName === "body") setBodyFont(newFontFamily);
+    else setHeadingFont(newFontFamily);
+  };
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size="icon" variant="ghost" disabled>
+        <Button size="icon" variant="ghost">
           <Type size={20} />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="space-y-4 w-[220px] flex flex-col items-center z-[101]">
-        {/* <div className="w-full">
+        <div className="w-full">
           <p className="pb-2 text-sm">Heading</p>
           <div className="flex space-x-2">
             <FontPicker
@@ -68,7 +75,7 @@ export const FontsPopover = () => {
               <Dice5 className="w-5 h-5" />
             </Button>
           </div>
-        </div> */}
+        </div>
       </PopoverContent>
     </Popover>
   );
