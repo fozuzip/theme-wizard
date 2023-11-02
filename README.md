@@ -1,8 +1,10 @@
 # Theme Wizard
 
+![Screenshot_2](https://github.com/fozuzip/theme-wizard/assets/53112283/9f77e219-f313-4905-953d-8b050d623703)
+
 Theme Wizard is an interactive design tool built with Next.js 13 that empowers designers and developers to discover and fine-tune the theme for their next project. Whether you're working with Tailwind CSS or Shadcn/UI apps, Theme Wizard provides a simple and intuitive interface to customize colors, fonts, and visual styles effortlessly.
 
-Check the live site: [themewizard.com](https://themewizard.com/)
+Check the [live site](https://theme-wizard.vercel.app/)
 
 ---
 
