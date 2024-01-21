@@ -277,7 +277,7 @@ export function parseColors(colors: Color[]) {
   const formattedColors = colors.map((colorObj) => {
     const { varName, colorHsl } = colorObj;
     const { h, s, l } = colorHsl;
-    const formattedColor = `\t\t${varName}: ${h} ${s}% ${l}%`;
+    const formattedColor = `\t\t${varName}: ${h} ${s}% ${l}%;`;
     return formattedColor;
   });
 
