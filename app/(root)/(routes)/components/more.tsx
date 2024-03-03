@@ -12,7 +12,7 @@ export const Features = () => {
           Explore Theme Wizard&apos;s
           <br />
           <span className="bg-gradient-to-r from-primary to-destructive bg-clip-text text-transparent ">
-            Vesratile Toolkit
+            Versatile Toolkit
           </span>
         </h1>
       </div>
